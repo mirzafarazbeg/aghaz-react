@@ -187,6 +187,19 @@ function CardsPage({ data }) {
     }
   };
 
+  const handleVideoError = () => {
+    setIsVideoPlaying(false);
+    setVideoEnded(true);
+    if (videoRef.current) {
+      try {
+        videoRef.current.pause();
+      } catch (err) {
+        // no-op if pause fails
+      }
+      videoRef.current = null;
+    }
+  };
+
   return (
     <div className="page-container">
       <div className="items-grid">
@@ -251,6 +264,8 @@ function CardsPage({ data }) {
                     autoPlay
                     controls
                     onEnded={() => setVideoEnded(true)}
+                    onError={handleVideoError}
+
                     src={`/videos/${word.videoFile}`}
                     style={{
                       width: '100%',
