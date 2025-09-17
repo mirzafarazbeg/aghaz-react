@@ -119,6 +119,74 @@ function CardsPage({ data }) {
   const word = popupSequence?.words[currentIndex];
   const nextWord = popupSequence?.words[currentIndex + 1];
 
+  const overlayStyles = {
+    mediaContainer: {
+      position: 'relative',
+      marginBottom: '20px',
+      borderRadius: '12px',
+    },
+    wordBadge: {
+      position: 'absolute',
+      top: '12px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      backgroundColor: 'rgba(0, 0, 0, 0.65)',
+      color: '#fff',
+      padding: '8px 18px',
+      borderRadius: '999px',
+      fontSize: '32px',
+      fontWeight: '700',
+      whiteSpace: 'nowrap',
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
+      zIndex: 2,
+      maxWidth: '70%',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      pointerEvents: 'none',
+    },
+    letterBadge: {
+      position: 'absolute',
+      top: '12px',
+      left: '12px',
+      backgroundColor: 'rgba(255, 255, 255, 0.85)',
+      color: '#333',
+      padding: '6px 14px',
+      borderRadius: '999px',
+      fontSize: '22px',
+      fontWeight: '600',
+      whiteSpace: 'nowrap',
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
+      zIndex: 2,
+      pointerEvents: 'none',
+    },
+    nextButton: {
+      position: 'absolute',
+      top: '50%',
+      right: '12px',
+      transform: 'translateY(-50%)',
+      backgroundColor: 'rgba(0, 0, 0, 0.65)',
+      color: '#fff',
+      padding: '10px 16px',
+      borderRadius: '999px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      fontSize: '18px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      border: 'none',
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
+      zIndex: 2,
+      maxWidth: '55%',
+      whiteSpace: 'nowrap',
+    },
+    nextButtonText: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    }
+  };
+
   return (
     <div className="page-container">
       <div className="items-grid">
@@ -174,119 +242,75 @@ function CardsPage({ data }) {
               position: 'relative',
             }}
           >
-            {/* Main Word */}
-            <div style={{
-              fontSize: '42px',
-              color: '#333',
-              marginBottom: '10px',
-              fontWeight: 'bold',
-              borderBottom: '2px solid #eee',
-              paddingBottom: '10px',
-            }}>
-              {word.word}
-            </div>
-
-            {/* Optional label below */}
-            <div style={{
-              fontSize: '24px',
-              color: '#777',
-              marginBottom: '20px',
-            }}>
-              {/* {word.label || word.word} */}
-              {popupSequence.harf}
-            </div>
-
-            {/* Media */}
-            {isVideoPlaying && word.videoFile ? (
-              <div style={{ position: 'relative', marginBottom: '20px' }}>
-                <video
-                  ref={videoRef}
-                  muted
-                  autoPlay
-                  controls
-                  onEnded={() => setVideoEnded(true)}
-                  src={`/videos/${word.videoFile}`}
-                  style={{
-                    width: '100%',
-                    maxHeight: '65vh',
-                    objectFit: 'fill',
-                    borderRadius: '12px',
-                  }}
-                />
+            <div style={overlayStyles.mediaContainer}>
+              {isVideoPlaying && word.videoFile ? (
+                <>
+                  <video
+                    ref={videoRef}
+                    muted
+                    autoPlay
+                    controls
+                    onEnded={() => setVideoEnded(true)}
+                    src={`/videos/${word.videoFile}`}
+                    style={{
+                      width: '100%',
+                      maxHeight: '65vh',
+                      objectFit: 'fill',
+                      borderRadius: '12px',
+                      display: 'block',
+                    }}
+                  />
+                  <img
+                    src={`/images/${word.imageFile}`}
+                    alt=""
+                    style={{
+                      position: 'absolute',
+                      bottom: '10px',
+                      right: '10px',
+                      width: '30%',
+                      height: '35%',
+                      border: '2px solid #fff',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                      backgroundColor: '#fff',
+                      objectFit: 'cover',
+                      zIndex: 1,
+                    }}
+                  />
+                </>
+              ) : (
                 <img
                   src={`/images/${word.imageFile}`}
-                  alt=""
+                  alt={word.word}
                   style={{
-                    position: 'absolute',
-                    bottom: '10px',
-                    right: '10px',
-                    width: '30%',
-                    height: '35%',
-                    border: '2px solid #fff',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-                    backgroundColor: '#fff'
+                    width: '100%',
+                    maxHeight: '50vh',
+                    objectFit: 'contain',
+                    borderRadius: '12px',
+                    display: 'block',
                   }}
                 />
-              </div>
-            ) : (
-              <img
-                src={`/images/${word.imageFile}`}
-                alt={word.word}
-                style={{
-                  width: '100%',
-                  maxHeight: '50vh',
-                  objectFit: 'contain',
-                  borderRadius: '12px',
-                  marginBottom: '20px',
-                }}
-              />
-            )}
-
-            {/* Control Buttons */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '20px',
-              marginTop: '10px'
-            }}>
-              {/* <button style={btnStyle} onClick={(e) => {
-                e.stopPropagation();
-                const audio = new Audio('/sounds/' + word.soundFile);
-                audio.play();
-              }}>🔊</button>
-
-              {word.videoFile && !isVideoPlaying && (
-                <button style={btnStyle} onClick={(e) => {
-                  e.stopPropagation();
-                  setIsVideoPlaying(true);
-                }}>🎥</button>
               )}
 
-              <button style={btnStyle} onClick={(e) => {
-                e.stopPropagation();
-                handleNext();
-              }}>➡</button> */}
-            {/* Next word preview */}
-            {nextWord && (
-              <div style={{
-                position: 'relative',
-                top: '5px',
-                right: '50px',
-                fontSize: '26px',
-                backgroundColor: '#fff',
-                padding: '6px 10px',
-                borderRadius: '10px',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-                color: '#444',
-                cursor: 'pointer'
-              }}  onClick={(e) => {
-                e.stopPropagation();
-                handleNext();
-              }}>
-                ➡️اگلا لفظ: {nextWord.word}
-              </div>
-            )}
+              <div style={overlayStyles.wordBadge}>{word.word}</div>
+
+              {popupSequence.harf && (
+                <div style={overlayStyles.letterBadge}>{popupSequence.harf}</div>
+              )}
+
+              {nextWord && (
+                <button
+                  type="button"
+                  style={overlayStyles.nextButton}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleNext();
+                  }}
+                >
+                  <span role="img" aria-label="Next word">➡️</span>
+                  <span style={overlayStyles.nextButtonText}>اگلا لفظ: {nextWord.word}</span>
+                </button>
+              )}
             </div>
 
           </div>
