@@ -265,6 +265,7 @@ function CardsPage({ data }) {
                     controls
                     onEnded={() => setVideoEnded(true)}
                     onError={handleVideoError}
+
                     src={`/videos/${word.videoFile}`}
                     style={{
                       width: '100%',
