@@ -1,0 +1,38 @@
+[
+    {
+        "title": "الفاظ ملائیں",
+        "thumbnail": "/images/word_matching.png",
+        "component": "WordMatching",
+        "comingSoon": false
+    },
+    {
+        "title": "یادداشت کا کھیل",
+        "thumbnail": "/images/memory_game.png",
+        "component": "MemoryGame",
+        "comingSoon": false
+    },
+    {
+        "title": "تصویری پہیلی",
+        "thumbnail": "/images/puzzle_game.png",
+        "component": "PicturePuzzle",
+        "comingSoon": false
+    },
+    {
+        "title": "آواز ملائیں",
+        "thumbnail": "/images/sound_matching.png",
+        "component": "SoundMatching",
+        "comingSoon": false
+    },
+    {
+        "title": "لفظ پہچانیں",
+        "thumbnail": "/images/quick_quiz.png",
+        "component": "QuickQuiz",
+        "comingSoon": false
+    },
+    {
+        "title": "حروف کی ترتیب",
+        "thumbnail": "/images/alphabet_ordering.png",
+        "component": "AlphabetOrdering",
+        "comingSoon": false
+    }
+]

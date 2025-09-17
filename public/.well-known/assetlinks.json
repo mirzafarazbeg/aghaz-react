@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.aghazurdu.app",
+      "sha256_cert_fingerprints": [
+        "64:A9:EA:47:4C:42:F0:80:81:0B:C0:6E:9D:38:3D:DA:BE:D9:9B:9C:8E:47:F5:78:99:F2:2A:25:E4:9B:09:03"
+      ]
+    }
+  }
+]

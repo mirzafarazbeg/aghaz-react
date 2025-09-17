@@ -1,0 +1,39 @@
+.mascot-start {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(3);
+    z-index: 1000;
+    animation: mascotIntro 3.5s ease-out forwards;
+}
+
+.mascot-final {
+    position: fixed;
+    bottom: 10%; /* Raised from 20px */
+    right: 20px;
+    transform: scale(1);
+    z-index: 10;
+}
+
+@keyframes mascotIntro {
+    0% {
+        transform: translate(-50%, -50%) scale(3);
+    }
+    100% {
+        transform: translateY(110%) scale(1);
+    }
+}
+
+.speech-bubble {
+    position: absolute;
+    bottom: 120px;
+    right: -10px;
+    background-color: #f5f5f5;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-family: 'Jameel Noori Nastaleeq';
+    font-size: 16px;
+    color: #333;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 20;
+}

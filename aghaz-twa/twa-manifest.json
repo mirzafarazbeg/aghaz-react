@@ -1,0 +1,52 @@
+{
+  "packageId": "com.aghazurdu.app",
+  "host": "www.aghazurdu.com",
+  "name": "آغاز اردو - Learn Urdu",
+  "launcherName": "آغاز اردو",
+  "display": "fullscreen",
+  "themeColor": "#000000",
+  "themeColorDark": "#000000",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#7CC0FF",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://www.aghazurdu.com/manifest-icon-512.maskable.png",
+  "maskableIconUrl": "https://www.aghazurdu.com/manifest-icon-512.maskable.png",
+  "monochromeIconUrl": "https://www.aghazurdu.com/manifest-icon-512.maskable.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "C:\\Users\\USER\\aghaz-react\\aghaz-twa\\android.keystore",
+    "alias": "android"
+  },
+  "appVersionName": "4",
+  "appVersionCode": 4,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://www.aghazurdu.com/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://www.aghazurdu.com/",
+  "minSdkVersion": 21,
+  "orientation": "any",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "protocolHandlers": [
+    {
+      "protocol": "web+urdu",
+      "url": "https://www.aghazurdu.com/?content=%s"
+    }
+  ],
+  "fileHandlers": [],
+  "launchHandlerClientMode": "",
+  "appVersion": "4"
+}
