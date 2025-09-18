@@ -272,7 +272,7 @@ function CardsPage({ data }) {
                     style={{
                       width: '100%',
                       maxHeight: '65vh',
-                      objectFit: 'fill',
+                      objectFit: 'contain',
                       borderRadius: '12px',
                       display: 'block',
                     }}
@@ -284,13 +284,15 @@ function CardsPage({ data }) {
                       position: 'absolute',
                       bottom: '10px',
                       right: '10px',
-                      width: '30%',
-                      height: '35%',
+                      width: 'auto',
+                      height: 'auto',
+                      maxWidth: '35%',
+                      maxHeight: '35%', 
                       border: '2px solid #fff',
                       borderRadius: '8px',
                       boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
                       backgroundColor: '#fff',
-                      objectFit: 'cover',
+                      objectFit: 'contain',
                       zIndex: 1,
                     }}
                   />
@@ -309,11 +311,11 @@ function CardsPage({ data }) {
                 />
               )}
 
-              <div style={overlayStyles.wordBadge}>{word.word}</div>
+              <div style={overlayStyles.wordBadge}>{popupSequence.harf}⬅️{word.word}</div>
 
-              {popupSequence.harf && (
+              {/* {popupSequence.harf && (
                 <div style={overlayStyles.letterBadge}>{popupSequence.harf}</div>
-              )}
+              )} */}
 
               {nextWord && (
                 <button
