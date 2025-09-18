@@ -4,9 +4,16 @@
   background-color: #f7f6f1;
   text-align: center;
   user-select: none;
+  /* Keep container slightly smaller than viewport in both axes */
+  width: calc(100vw - 4px);
+  width: calc(100dvw - 4px);
+  width: calc(100svw - 4px);
+  height: calc(100vh - 4px);
+  height: calc(100dvh - 4px);
+  height: calc(100svh - 4px);
   overflow: hidden;
-  max-height: 100vh;
   box-sizing: border-box;
+  margin: 0 auto;
 }
 
 /* Responsive wrapping grid */
@@ -20,6 +27,8 @@
   padding: 10px;
   width: 100%;
   box-sizing: border-box;
+  /* Avoid horizontal scroll from rounding on small screens */
+  overflow-x: hidden;
 }
 
 /* Word & Image cards auto-size with screen */
@@ -93,6 +102,44 @@
     width: 80px;
     height: 80px;
     font-size: 16px;
+  }
+}
+
+/* Landscape on small-height devices: confine to viewport and shrink items */
+@media (orientation: landscape) and (max-height: 500px) {
+  .wm-container {
+    /* keep slightly under viewport, no scrollbars */
+    width: calc(100vw - 4px);
+    width: calc(100dvw - 4px);
+    width: calc(100svw - 4px);
+    height: calc(100vh - 4px);
+    height: calc(100dvh - 4px);
+    height: calc(100svh - 4px);
+    overflow: hidden;
+    padding-bottom: 8px;
+  }
+
+  .wm-grid {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .word-card,
+  .image-card {
+    width: min(17svw, 17svh, 85px);
+    height: min(17svw, 17svh, 85px);
+    font-size: clamp(12px, 2.2svw, 14px);
+  }
+
+  .controls {
+    gap: 16px;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .message {
+    font-size: 16px;
+    margin-top: 10px;
   }
 }
 
