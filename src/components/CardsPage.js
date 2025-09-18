@@ -3,7 +3,9 @@ import '../index.css';
 import '../pages.css';
 
 function CardsPage({ data }) {
-  const isQaida = data[0]?.letter !== undefined;
+  // const last5 = location.href.slice(-5);
+  // const isQaida = data[0]?.letter !== null;
+  const isQaida = window.location.href.slice(-5).toLowerCase() === "qaida";
   const [popupSequence, setPopupSequence] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -256,7 +258,7 @@ function CardsPage({ data }) {
             }}
           >
             <div style={overlayStyles.mediaContainer}>
-              {isVideoPlaying && word.videoFile ? (
+              {isVideoPlaying && word.videoFile && isQaida ? (
                 <>
                   <video
                     ref={videoRef}
