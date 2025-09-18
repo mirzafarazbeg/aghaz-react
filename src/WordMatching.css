@@ -1,20 +1,22 @@
 .wm-container {
-  padding: 10px;
+  padding: 1svw;
   font-family: 'Jameel Noori Nastaleeq', serif;
   background-color: #f7f6f1;
   text-align: center;
   user-select: none;
-  /* Keep container slightly smaller than viewport in both axes */
-  width: calc(100vw - 4px);
-  width: calc(100dvw - 4px);
-  width: calc(100svw - 4px);
-  height: calc(100vh - 4px);
-  height: calc(100dvh - 4px);
-  height: calc(100svh - 4px);
-  overflow: hidden;
+  /* Prevent scrollbars; confine to viewport height */
+  overflow-x: hidden;
+  overflow-y: hidden;
+  max-height: 100dvh;
+  height: 100svh;
   box-sizing: border-box;
   margin: 0 auto;
 }
+
+/* Header (unused now) */
+.wm-header { display: none; }
+.wm-title { margin: 0; }
+.wm-side { display: none; }
 
 /* Responsive wrapping grid */
 .wm-grid {
@@ -22,9 +24,9 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
-  gap: 10px;
-  margin-top: 20px;
-  padding: 10px;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px;
   width: 100%;
   box-sizing: border-box;
   /* Avoid horizontal scroll from rounding on small screens */
@@ -34,9 +36,9 @@
 /* Word & Image cards auto-size with screen */
 .word-card,
 .image-card {
-  width: min(22vw, 120px);
-  height: min(22vw, 120px);
-  font-size: clamp(16px, 3vw, 22px);
+  width: min(20vmin, 110px);
+  height: min(20vmin, 110px);
+  font-size: clamp(14px, 2.4vmin, 22px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,7 +66,7 @@
 /* Match feedback message */
 .message {
   font-size: 20px;
-  margin-top: 15px;
+  margin-top: 5px;
   color: #333;
 }
 
@@ -79,7 +81,7 @@
 }
 
 .restart-button {
-  padding: 5px 15px;
+  padding: 5px 5px;
   font-size: 16px;
   background-color: #eee;
   border: 1px solid #aaa;
@@ -108,27 +110,27 @@
 /* Landscape on small-height devices: confine to viewport and shrink items */
 @media (orientation: landscape) and (max-height: 500px) {
   .wm-container {
-    /* keep slightly under viewport, no scrollbars */
-    width: calc(100vw - 4px);
-    width: calc(100dvw - 4px);
-    width: calc(100svw - 4px);
-    height: calc(100vh - 4px);
-    height: calc(100dvh - 4px);
-    height: calc(100svh - 4px);
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100svh;           /* stable viewport height on mobile */
+    max-height: 100svh;
+    overflow: hidden;         /* no page-level overflow */
     padding-bottom: 8px;
   }
 
   .wm-grid {
     gap: 8px;
     padding: 8px;
+    flex: 1;                  /* take remaining space */
+    min-height: 0;            /* allow flex child to shrink */
+    overflow: hidden;         /* no scrolling */
   }
 
   .word-card,
   .image-card {
-    width: min(17svw, 17svh, 85px);
-    height: min(17svw, 17svh, 85px);
-    font-size: clamp(12px, 2.2svw, 14px);
+    width: min(14svmin, 70px);
+    height: min(14svmin, 70px);
+    font-size: 13px;
   }
 
   .controls {

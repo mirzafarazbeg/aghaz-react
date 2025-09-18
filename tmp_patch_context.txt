@@ -1,0 +1,20 @@
+
+  return (
+    <div className="wm-container">
+      <div className="wm-header">
+        <div className="wm-side left">
+          <div className="score">OO3UcU^O�: {score}/6</div>
+        </div>
+        <h2 className="wm-title">U.U,OO U,U?O, OU^O� O�O�U^UOO�</h2>
+        <div className="wm-side right">
+          <div className="timer">�?� U^U,O�: {secondsElapsed} O3UOUcU+U^</div>
+          <button className="restart-button" onClick={initGame}>dY", O_U^O"OO�U? UcU_UOU,UOU�</button>
+        </div>
+      </div>
+      <h2>ملاؤ لفظ اور تصویر</h2>
+
+      <div className="controls">
+        <div className="score">اسکور: {score}/6</div>
+        <div className="timer">⏱ وقت: {secondsElapsed} سیکنڈ</div>
+        <button className="restart-button" onClick={initGame}>🔄 دوبارہ کھیلیں</button>
+      </div>

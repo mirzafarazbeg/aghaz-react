@@ -117,7 +117,7 @@ function WordMatching() {
       if (isCorrect && !alreadyMatched) {
         const updated = [...prev, cleanTarget];
         setScore(s => s + 1);
-        setMessage('✅ صحیح!');
+        setMessage(':✅ صحیح!');
         playSound('correct');
 
         const timestamp = new Date().toLocaleTimeString();
@@ -141,7 +141,7 @@ function WordMatching() {
       }
 
       if (!isCorrect) {
-        setMessage('❌ غلط!');
+        setMessage(':❌ غلط!');
         playSound('wrong');
         console.log('❌ NO MATCH');
         console.log('  Dragged:', cleanDragged);
@@ -163,13 +163,11 @@ function WordMatching() {
     <div className="wm-container">
       <h2>ملاؤ لفظ اور تصویر</h2>
 
-      <div className="controls">
-        <div className="score">اسکور: {score}/6</div>
-        <div className="timer">⏱ وقت: {secondsElapsed} سیکنڈ</div>
-        <button className="restart-button" onClick={initGame}>🔄 دوبارہ کھیلیں</button>
+      <div className="message">
+        Score➡️{score/2}/6{message}
+      {quote && (          <button className="restart-button" onClick={initGame}>🔄 دوبارہ کھیلیں</button>
+)}
       </div>
-
-      <div className="message">{message}</div>
 
       <div className="wm-grid">
         {shuffledWords
