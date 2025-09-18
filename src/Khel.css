@@ -72,13 +72,13 @@
     background-color: #ffffff;
     padding: 15px;
     border-radius: 10px;
-    width: 90vw;
-    max-width: 800px;
+    width: 85vw;
+    max-width: 80vw;
     position: relative;
     overflow: hidden;
     margin: 2vh auto;
-    max-height: 95vh;
-    min-height: 400px;
+    max-height: 90vh;
+    
     display: flex;
     flex-direction: column;
     z-index: 9999;
@@ -204,7 +204,7 @@
 /* Close Button */
 .close-button {
     position: absolute;
-    top: 15px;
+    top: 25px;
     right: 15px;
     font-size: 24px;
     background-color: #f44336 !important;
