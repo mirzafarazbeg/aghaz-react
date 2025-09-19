@@ -1,35 +1,43 @@
 .memory-title {
   text-align: center;
   font-family: 'Jameel Noori Nastaleeq', serif;
-  font-size: 36px;
-  margin: 10px 0;
+  font-size: 18px; /* smaller title */
+  margin: 10px 0 10px;
 }
 
 .memory-score-card {
-  display: flex;
-  justify-content: space-around;
-  font-size: 18px;
-  font-weight: bold;
-  background-color: #f0f0f0;
+  position: absolute;        /* stick to top-left of popup */
+  top: 8px;
+  left: 18px;
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: rgba(0,0,0,0.06);
   color: #333;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 10px auto;
-  width: 80%;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 6px 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  z-index: 2;
 }
 
 .memory-grid {
+  /* Fill remaining space; size by columns so squares stay robust */
+  flex: 1 1 auto;       /* grow and shrink as needed */
+  min-height: 0;                 /* allow flex child to shrink */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  gap: 15px;
-  padding: 20px;
-  justify-items: center;
+  gap: 12px;
+  padding: 12px 12px 16px;
+  justify-content: center;
+  align-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(90px, 14vmin, 150px), 1fr));
 }
 
 .memory-card {
-  width: 80px;
-  height: 80px;
+  width: 100%;
+  aspect-ratio: 1 / 1;           /* square cards sized by column width */
+  height: 20vh;
   background-color: #fff;
   border: 2px solid #ccc;
   border-radius: 8px;
@@ -37,7 +45,7 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  font-size: 24px;
+  font-size: clamp(18px, 3.2vmin, 28px);
   font-family: 'Jameel Noori Nastaleeq', serif;
   transition: transform 0.3s;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -90,7 +98,8 @@
 }
 
 .replay-button {
-  margin-top: 15px;
+  position: relative;
+  margin-top: 0px;
   padding: 8px 16px;
   background-color: #008cba;
   color: white;
@@ -103,3 +112,57 @@
 .replay-button:hover {
   background-color: #005f6b;
 }
+
+.mascot-popup {
+    height: 75%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 15px 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 250px;
+    z-index: 999;
+    animation: mascot-pop-in 0.5s ease, mascot-bounce 1.5s ease-in-out infinite;
+    border: 3px solid #f7d02c;
+    box-shadow: 0 0 20px rgba(247, 208, 44, 0.7);
+}
+
+.mascot-popup:hover {
+    box-shadow: 0 0 30px rgba(247, 208, 44, 0.9), 0 0 50px rgba(247, 208, 44, 0.6);
+}
+
+.mascot-image {
+    width: 120px;
+    margin-bottom: -15px;
+}
+
+.mascot-quote {
+    font-size: 18px;
+    color: #333;
+    margin: 0;
+}
+
+@keyframes mascot-pop-in {
+    0% {
+        transform: scale(0) translate(-50%, -50%);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1) translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+@keyframes mascot-bounce {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, calc(-50% - 20px)) scale(1.05);
+    }
+}
+
