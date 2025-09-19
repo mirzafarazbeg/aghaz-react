@@ -1,7 +1,7 @@
 .wm-container {
   padding: 1svw;
   font-family: 'Jameel Noori Nastaleeq', serif;
-  background-color: #f7f6f1;
+  /*background-color: #f7f6f1;*/
   text-align: center;
   user-select: none;
   /* Prevent scrollbars; confine to viewport height */
@@ -18,32 +18,31 @@
 .wm-title { margin: 0; }
 .wm-side { display: none; }
 
-/* Responsive wrapping grid */
+/* Responsive grid: maximizes equal square cards */
 .wm-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 8px;
-  margin-top: 8px;
-  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--wm-cell-min, 90px), 1fr));
+  gap: 10px;
+  margin-top: 2px;
+  padding: 1px;
   width: 100%;
   box-sizing: border-box;
   /* Avoid horizontal scroll from rounding on small screens */
   overflow-x: hidden;
 }
 
-/* Word & Image cards auto-size with screen */
+/* Cards fill their grid cell and stay square (all equal size) */
 .word-card,
 .image-card {
-  width: min(20vmin, 110px);
-  height: min(20vmin, 110px);
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
   font-size: clamp(14px, 2.4vmin, 22px);
   display: flex;
   justify-content: center;
   align-items: center;
   border: 2px solid #ccc;
-  border-radius: 10px;
+  border-radius: 8px;
   background: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -53,8 +52,9 @@
 
 /* Image scaling inside card */
 .image-card img {
-  max-width: 90%;
-  max-height: 90%;
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
   pointer-events: none;
 }
 
@@ -98,52 +98,6 @@
 } */
 
 /* On smaller screens, shrink more */
-@media (max-width: 500px) {
-  .word-card,
-  .image-card {
-    width: 80px;
-    height: 80px;
-    font-size: 16px;
-  }
-}
-
-/* Landscape on small-height devices: confine to viewport and shrink items */
-@media (orientation: landscape) and (max-height: 500px) {
-  .wm-container {
-    display: flex;
-    flex-direction: column;
-    height: 100svh;           /* stable viewport height on mobile */
-    max-height: 100svh;
-    overflow: hidden;         /* no page-level overflow */
-    padding-bottom: 8px;
-  }
-
-  .wm-grid {
-    gap: 8px;
-    padding: 8px;
-    flex: 1;                  /* take remaining space */
-    min-height: 0;            /* allow flex child to shrink */
-    overflow: hidden;         /* no scrolling */
-  }
-
-  .word-card,
-  .image-card {
-    width: min(14svmin, 70px);
-    height: min(14svmin, 70px);
-    font-size: 13px;
-  }
-
-  .controls {
-    gap: 16px;
-    font-size: 16px;
-    margin-bottom: 6px;
-  }
-
-  .message {
-    font-size: 16px;
-    margin-top: 10px;
-  }
-}
 
 .mascot {
   position: fixed;
