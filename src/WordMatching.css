@@ -18,10 +18,12 @@
 .wm-title { margin: 0; }
 .wm-side { display: none; }
 
-/* Responsive grid: maximizes equal square cards */
+/* Responsive wrapping grid */
 .wm-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--wm-cell-min, 90px), 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
   gap: 10px;
   margin-top: 2px;
   padding: 1px;
@@ -31,18 +33,17 @@
   overflow-x: hidden;
 }
 
-/* Cards fill their grid cell and stay square (all equal size) */
+/* Word & Image cards auto-size with screen */
 .word-card,
 .image-card {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  height: auto;
-  font-size: clamp(14px, 2.4vmin, 22px);
+  width: 20vw;
+  height: 15vh;
+  font-size: clamp(20px, 2.4vmin, 22px);
   display: flex;
   justify-content: center;
   align-items: center;
   border: 2px solid #ccc;
-  border-radius: 8px;
+  border-radius: 5px;
   background: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -52,11 +53,14 @@
 
 /* Image scaling inside card */
 .image-card img {
-  width: 85%;
-  height: 85%;
-  object-fit: contain;
+  max-width: 100%;
+  max-height: 15vh;
+  width: 40vw;
+  height: 120%;
   pointer-events: none;
 }
+
+
 
 /* Active drop feedback */
 .image-card.hover {

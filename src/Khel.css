@@ -1,14 +1,14 @@
 /* Main Khel Styles */
 .khel {
     text-align: center;
-    padding: 20px;
+    padding: 0px;
 }
 
 .game-title {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 2px;
+    margin-top: 0px;
     margin-bottom: 2px;
 }
 
@@ -16,36 +16,48 @@
 .game-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: clamp(8px, 2vw, 16px);
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 /* Game Card */
 .game-card {
-    width: 200px;
+    /* Responsive, no media queries */
+    flex: 1 1 clamp(160px, 26vw, 260px);
+    aspect-ratio: 4 / 3;              /* Consistent shape */
     cursor: pointer;
-    text-align: center;
+    display: grid;                     /* Image + title rows */
+    grid-template-rows: minmax(0, 1fr) minmax(40px, 18%);
+    align-content: stretch;
     border-radius: 10px;
     overflow: hidden;
     background-color: #f9f9f9;
     border: 2px solid #ddd;
     transition: transform 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+    padding: 1px;                      /* cover available area minus 2px */
 }
 
 .game-card img {
     width: 100%;
-    height: 150px;
-    object-fit: cover;
+    height: 100%;                      /* fill its grid row */
+    object-fit: cover;                 /* cover available space */
     border-bottom: 1px solid #ddd;
+    grid-row: 1;
 }
 
 .game-card span {
-    padding: 10px;
-    font-size: 18px;
-    background-color: #f0f0f0;
-    display: block;
+    padding: 6px 10px;
+    font-size: clamp(14px, 2.2vw, 18px);
+    background-color: #444;
+    color: #fff;
+    display: flex;                     /* center and fill row */
+    align-items: center;
+    justify-content: center;
     border-radius: 0 0 10px 10px;
+    grid-row: 2;
+    min-height: 0;
 }
 
 .game-card:hover {
@@ -78,7 +90,6 @@
     overflow: hidden;
     margin: 2vh auto;
     max-height: 90vh;
-    
     display: flex;
     flex-direction: column;
     z-index: 9999;
@@ -288,30 +299,3 @@
     }
 }
 
-/* Responsive Fix for Small Screens */
-@media (max-width: 600px) {
-    .word {
-        width: 90px;
-        height: 90px;
-        font-size: 20px;
-    }
-
-    .image {
-        width: 90px;
-        height: 90px;
-    }
-
-    .fixed-score-container {
-        font-size: 16px;
-        padding: 8px 15px;
-    }
-
-    .matching-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .word-list, .image-list {
-        max-width: 100%;
-    }
-}

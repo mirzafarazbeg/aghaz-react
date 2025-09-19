@@ -161,9 +161,22 @@ function WordMatching() {
 
   return (
     <div className="wm-container">
-      <h2>ملاؤ لفظ اور تصویر</h2>
+     <p>ملاؤ لفظ اور تصویر</p>
+      
 
-      <div className="message">
+
+      <div 
+            style={{
+      position: 'absolute',
+      top: '10px',        // adjust vertical position
+      left: '10px',     // distance from right
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      padding: '10px 15px',
+      borderRadius: '8px',
+      zIndex: 10,
+      // width or max-width if needed
+    }}
+>
         Score➡️{score/2}/6{message}
       {quote && (          <button className="restart-button" onClick={initGame}>🔄 دوبارہ کھیلیں</button>
 )}

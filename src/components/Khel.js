@@ -19,21 +19,6 @@ function Khel() {
 
     return (
         <div className="khel">
-<h1
-  style={{
-    fontFamily: "'Jameel Noori Nastaleeq'",
-    fontSize: '50px',
-    color: '#ffffff',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    padding: '5px 20px',
-    borderRadius: '15px',
-    marginBottom: '10px',
-    display: 'inline-block',
-    textShadow: '2px 2px 5px rgba(0, 0, 0, 0.8)'
-  }}
->
-  کھیل
-</h1>
             <div className="game-grid">
                 {gamesData.map((game, index) => (
                     <div
