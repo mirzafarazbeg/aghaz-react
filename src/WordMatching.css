@@ -24,9 +24,9 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
-  gap: 10px;
+  gap: 5px;
   margin-top: 2px;
-  padding: 1px;
+  padding: 1vh;
   width: 100%;
   box-sizing: border-box;
   /* Avoid horizontal scroll from rounding on small screens */

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import alphabetData from '../Data/alphabetData';
 import mascotQuotes from '../Data/mascotQuotes.json';
 import Confetti from 'react-confetti';
@@ -96,6 +96,7 @@ export default function PicturePuzzle() {
   const [wordSound, setWordSound]         = useState(null);
   const [currentWord, setCurrentWord]     = useState('');
   const [loading, setLoading]             = useState(true);
+  const gridWrapRef = useRef(null);
 
   // Fisher–Yates shuffle
   const shuffle = useCallback(tiles => {
@@ -189,6 +190,62 @@ export default function PicturePuzzle() {
     init();
   }, [shuffle]);
 
+  // Resize tiles to ensure all pieces are always visible, even on first landscape load
+  useEffect(() => {
+    function computeTileSize() {
+      const gap = 4;
+      const cols = GRID_SIZE;
+      const rows = GRID_SIZE;
+
+      const wrap = gridWrapRef.current;
+      if (!wrap) return;
+
+      const availW = wrap.clientWidth || (wrap.getBoundingClientRect()?.width ?? 0);
+      const popup = wrap.closest ? wrap.closest('.game-popup-content') : null;
+      const popupRect = popup ? popup.getBoundingClientRect() : null;
+      const popupH = popupRect ? popupRect.height : Math.round(window.innerHeight * 0.9);
+      const availH = Math.max(0, popupH - 32);
+
+      const byW = Math.floor((availW - (cols - 1) * gap) / cols);
+      const byH = Math.floor((availH - (rows - 1) * gap) / rows);
+      const size = Math.max(50, Math.min(byW, byH));
+      if (Number.isFinite(size) && size > 0) setTileSize(size);
+    }
+
+    // Run immediately and after layout settles (double RAF) to handle first render in landscape
+    computeTileSize();
+    const raf1 = requestAnimationFrame(() => requestAnimationFrame(computeTileSize));
+    const t300 = setTimeout(computeTileSize, 300);
+    const t600 = setTimeout(computeTileSize, 600);
+
+    window.addEventListener('resize', computeTileSize);
+    window.addEventListener('orientationchange', computeTileSize);
+    const vv = window.visualViewport;
+    if (vv && vv.addEventListener) vv.addEventListener('resize', computeTileSize);
+    // no pageshow/load listeners; RAF + timeouts already cover first paint
+
+    // Observe popup container size changes
+    let ro;
+    if (typeof ResizeObserver !== 'undefined') {
+      const popup = gridWrapRef.current?.closest && gridWrapRef.current.closest('.game-popup-content');
+      if (popup) {
+        ro = new ResizeObserver(computeTileSize);
+        ro.observe(popup);
+      }
+    }
+
+    return () => {
+      cancelAnimationFrame(raf1);
+      clearTimeout(t300);
+      clearTimeout(t600);
+      window.removeEventListener('resize', computeTileSize);
+      window.removeEventListener('orientationchange', computeTileSize);
+      // cleanup handled above
+      if (vv && vv.removeEventListener) vv.removeEventListener('resize', computeTileSize);
+      if (ro) ro.disconnect();
+    };
+  }, []);
+
   const handleSwap = (r1, c1, r2, c2) => {
     setGrid(curr => {
       const copy = curr.map(row => [...row]);
@@ -225,21 +282,35 @@ export default function PicturePuzzle() {
   if (loading) return <div>Loading puzzle…</div>;
 
   return (
-    <div style={{ textAlign: "center", padding: 20 }}>
-      <h2>تصویری پہیلی</h2>
-      <h3 style={{ marginTop: 4 }}>{currentWord}</h3>
+    <div className="pp-container" style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', padding: 12 }}>
+      {/* Word overlay: right middle, larger font */}
+      <div style={{ position: 'absolute', right: 28, top: '50%', transform: 'translateY(-50%)', zIndex: 1, pointerEvents: 'none' }}>
+        <div style={{
+          background: 'rgba(255,255,255,0.9)',
+          borderRadius: '9999px',
+          padding: '6px 14px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          backdropFilter: 'blur(2px)'
+        }}>
+          <h2 style={{ margin: 0, fontSize: 'clamp(24px, 5.5vmin, 44px)' }}>{currentWord}</h2>
+        </div>
+      </div>
 
-      <div
-        style={{
-          display: "grid",
-          direction: "ltr",
-          gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)`,
-          width: "100%",
-          maxWidth: `${GRID_SIZE * tileSize}px`,
-          margin: "20px auto",
-          gap: "2px"
-        }}
-      >
+      {/* Center the grid in available space */}
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div
+          ref={gridWrapRef}
+          style={{
+            display: 'grid',
+            direction: 'ltr',
+            gridTemplateColumns: `repeat(${GRID_SIZE}, ${tileSize}px)`,
+            gridAutoRows: `${tileSize}px`,
+            justifyContent: 'center',
+            width: '100%',
+            maxWidth: '100%',
+            gap: '4px'
+          }}
+        >
         {grid.map((row, r) =>
           row.map((tile, c) => (
             <Tile
@@ -251,6 +322,7 @@ export default function PicturePuzzle() {
             />
           ))
         )}
+        </div>
       </div>
 
       {showConfetti && <Confetti recycle={false} numberOfPieces={400} />}
