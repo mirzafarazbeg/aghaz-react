@@ -86,11 +86,15 @@ function AlphabetOrdering() {
         <div className="mascot-quote">
           <div className="mascot-bubble">🌟 {quote}</div>
           <img src="/images/mascot.png" alt="Mascot" className="mascot" />
+          
         </div>
       )}
       {showConfetti && <Confetti />}
 
       <style>{`
+        .popup {
+         height: 90vh;
+        }
         .letter-grid {
           display: flex;
           justify-content: center;
@@ -112,8 +116,12 @@ function AlphabetOrdering() {
           transition: all 0.2s;
         }
         .mascot-quote {
-          margin-top: 20px;
+          margin-top: 0px;
           text-align: center;
+          position:absolute;
+          top:50%;
+          left:50%;
+          transform: translate(-50%, -50%);
         }
         .mascot-bubble {
           background: #fff3cd;

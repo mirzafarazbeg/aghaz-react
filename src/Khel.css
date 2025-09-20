@@ -304,3 +304,67 @@
     }
 }
 
+
+/* Sound Matching responsive grid */
+.sound-grid {
+    --sm-card: 160px;
+    display: grid;
+    grid-template-columns: repeat(2, var(--sm-card));
+    grid-auto-rows: var(--sm-card);
+    gap: 16px;
+    justify-content: center;
+    align-content: center;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: calc(var(--sm-card) * 2 + 16px);
+    margin: 0 auto;
+}
+
+.sound-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 6px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: border 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+
+}
+
+.sound-card:disabled {
+    cursor: default;
+}
+
+.sound-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.sound-card:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.sound-card-correct {
+    border-color: #2ecc71;
+}
+
+.sound-card-wrong {
+    border-color: #e74c3c;
+}
+
+@media (max-width: 600px) {
+    .sound-grid {
+        gap: 12px;
+        padding: 10px;
+    }
+}
+
+

@@ -131,7 +131,6 @@ function QuickQuiz({ onClose }) {
       {showConfetti && <Confetti />}
       {!showResult ? (
         <div className="quiz-content">
-          <h2>لفظ پہچانیں</h2>
           <img
             src={`/images/${questions[current].image}`}
             alt="quiz-img"
@@ -228,7 +227,7 @@ function QuickQuiz({ onClose }) {
         }
         .quiz-result p {
           font-size: 20px;
-          margin: 15px 0;
+          margin: 0px 0;
           text-align: center;
         }
         .quiz-result button {

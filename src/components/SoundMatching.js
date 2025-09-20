@@ -19,6 +19,7 @@ const SoundMatching = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const audioRef = useRef(null);
+  const gridRef = useRef(null);
 
   const playSound = (file) => {
     if (!file) return;
@@ -91,6 +92,66 @@ const SoundMatching = () => {
     }
   }, [gameWords, round, setupRound]);
 
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+
+    const computeSize = () => {
+      const popup = grid.closest('.game-popup-content');
+      const popupRect = popup ? popup.getBoundingClientRect() : null;
+      const gridRect = grid.getBoundingClientRect();
+      const styles = getComputedStyle(grid);
+      const gap = parseFloat(styles.gap || styles.rowGap || '0');
+      const paddingX = parseFloat(styles.paddingLeft || '0') + parseFloat(styles.paddingRight || '0');
+      const paddingY = parseFloat(styles.paddingTop || '0') + parseFloat(styles.paddingBottom || '0');
+
+      const cols = 2;
+      const rows = 2;
+      const totalGapX = gap * (cols - 1);
+      const totalGapY = gap * (rows - 1);
+
+      const hostWidth = popup ? popup.clientWidth : window.innerWidth;
+      const widthAvailable = Math.max(0, hostWidth - paddingX - totalGapX);
+      const widthBased = widthAvailable / cols;
+
+      let heightAvailable;
+      if (popupRect) {
+        heightAvailable = popupRect.bottom - gridRect.top - paddingY;
+      } else {
+        heightAvailable = window.innerHeight - gridRect.top - paddingY - 24;
+      }
+      const heightBased = Math.max(0, heightAvailable - totalGapY) / rows;
+
+      const card = Math.max(100, Math.min(widthBased, heightBased));
+      grid.style.setProperty('--sm-card', `${card}px`);
+    };
+
+    computeSize();
+    const raf = requestAnimationFrame(() => requestAnimationFrame(computeSize));
+    const t1 = setTimeout(computeSize, 250);
+    const t2 = setTimeout(computeSize, 600);
+
+    window.addEventListener('resize', computeSize);
+    window.addEventListener('orientationchange', computeSize);
+
+    let ro;
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(computeSize);
+      ro.observe(grid);
+      const popup = grid.closest('.game-popup-content');
+      if (popup) ro.observe(popup);
+    }
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      window.removeEventListener('resize', computeSize);
+      window.removeEventListener('orientationchange', computeSize);
+      if (ro) ro.disconnect();
+    };
+  }, []);
+
   const handleChoice = (item) => {
     if (selectedImage) return;
 
@@ -130,33 +191,28 @@ const SoundMatching = () => {
 
   return (
     <div className="game-popup-content" onClick={e => e.stopPropagation()}>
-      <h2 className="memory-title">آواز ملائیں</h2>
+      <div style={{ fontSize: '24px', textAlign: 'center', marginBottom: '10px' }}>{message}</div>
 
-      <div style={{ marginBottom: '15px', display: 'flex', gap: '15px', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ position:'absolute',right:'2vmin', top:'40%',display:'grid'}}>
         <button onClick={handleReplaySound} style={{
-          fontSize: '20px',
-          padding: '8px 20px',
+          fontSize: '30px',
           backgroundColor: '#444',
           color: '#fff',
           border: 'none',
           borderRadius: '8px',
           cursor: 'pointer'
-        }}>🔊 دوبارہ سنیں</button>
-
+        }}>🔊</button>
         <div style={{ fontSize: '18px' }}>سوال: {round + 1} / {TOTAL_ROUNDS}</div>
-        <div style={{ fontSize: '18px' }}>اسکور: {score}</div>
       </div>
 
-      <div style={{ fontSize: '24px', textAlign: 'center', marginBottom: '10px' }}>{message}</div>
 
       {/* 2x2 Grid */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gap: '20px',
+        gap: '1vmin',
         justifyContent: 'center',
-        alignItems: 'center',
-        padding: '10px 20px'
+        alignItems: 'center'
       }}>
         {options.map((item, idx) => (
           <div
@@ -179,7 +235,7 @@ const SoundMatching = () => {
               src={`/images/${item.imageFile}`}
               alt={item.word}
               style={{
-                width: '100%',
+                width: '55vmin',
                 height: 'auto',
                 objectFit: 'contain',
                 borderRadius: '8px',
