@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import Confetti from 'react-confetti';
 import alphabetData from '../Data/alphabetData';
@@ -43,10 +43,17 @@ function AlphabetOrdering() {
   const [quote, setQuote] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
 
-  useEffect(() => {
+  const initGame = useCallback(() => {
     const subset = [...UrduAlphabet].sort(() => 0.5 - Math.random()).slice(0, 6);
     setShuffled(subset);
+    setIsCorrect(false);
+    setQuote('');
+    setShowConfetti(false);
   }, []);
+
+  useEffect(() => {
+    initGame();
+  }, [initGame]);
 
   const moveLetter = (fromLetter, toLetter) => {
     const fromIdx = shuffled.indexOf(fromLetter);
@@ -86,6 +93,13 @@ function AlphabetOrdering() {
         <div className="mascot-quote">
           <div className="mascot-bubble">🌟 {quote}</div>
           <img src="/images/mascot.png" alt="Mascot" className="mascot" />
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+        <button
+          type="button"
+          onClick={initGame}
+          style={{ padding: '8px 18px', backgroundColor: '#444', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
+        >Play Again</button>
+      </div>
           
         </div>
       )}
@@ -140,3 +154,4 @@ function AlphabetOrdering() {
 }
 
 export default AlphabetOrdering;
+
