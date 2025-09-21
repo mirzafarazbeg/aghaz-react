@@ -6,6 +6,7 @@
     margin-top: 0px;
     min-height: 100vh;
     direction: rtl;
+    height: 90vh;
 }
 
 /* Item Grid */
@@ -14,6 +15,7 @@
     flex-wrap: wrap;
     justify-content: flex-end;
     margin-left: 80px;
+    height: 90vh;
 }
 
 /* Separator */

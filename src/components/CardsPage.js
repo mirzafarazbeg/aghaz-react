@@ -126,12 +126,12 @@ function CardsPage({ data }) {
       position: 'relative',
       marginBottom: '20px',
       borderRadius: '12px',
+      height: '90vh',
     },
     wordBadge: {
       position: 'absolute',
-      top: '12px',
-      left: '50%',
-      transform: 'translateX(-50%)',
+      top: '2vh',
+      right: '0vw',
       backgroundColor: 'rgba(0, 0, 0, 0.65)',
       color: '#fff',
       padding: '8px 18px',
@@ -164,10 +164,10 @@ function CardsPage({ data }) {
     nextButton: {
       position: 'absolute',
       top: '50%',
-      right: '12px',
+      right: '0px',
       transform: 'translateY(-50%)',
       backgroundColor: 'rgba(0, 0, 0, 0.65)',
-      color: '#fff',
+      color: '#888',
       padding: '10px 16px',
       borderRadius: '999px',
       display: 'flex',
@@ -206,7 +206,7 @@ function CardsPage({ data }) {
     <div className="page-container">
       <div className="items-grid">
         {data.map((item, idx) => (
-          <div key={idx} className="item-card" onClick={() => handleThumbnailClick(item)}>
+          <div  key={idx} className="item-card" onClick={() => handleThumbnailClick(item)}>
             <div className="harf-display">{item.harf || item.title}</div>
             {/* <img src={`/images/${item.letter || item.imageFile || 'default'}_01.jpg`} alt={item.harf || item.title} /> */}
             <img
@@ -245,11 +245,10 @@ function CardsPage({ data }) {
             onClick={(e) => e.stopPropagation()}
             style={{
               backgroundColor: '#fff',
-              borderRadius: '20px',
+              borderRadius: '10px',
               padding: '25px 30px',
-              maxWidth: '80%',
-              width: '100%',
-              maxHeight: '90%',
+              width: '80vw',
+              height: '80vh',
               overflow: 'hidden',
               boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
               textAlign: 'center',
@@ -271,10 +270,14 @@ function CardsPage({ data }) {
                     src={`/videos/${word.videoFile}`}
                     style={{
                       width: '100%',
-                      maxHeight: '65vh',
+                      height: '90%',
                       objectFit: 'contain',
-                      borderRadius: '12px',
+                      borderRadius: '30px',
                       display: 'block',
+                      position: 'absolute',
+                      top: '0%',
+                      left: '0%', 
+                      border: '2px solid #aaa', 
                     }}
                   />
                   <img
@@ -302,11 +305,16 @@ function CardsPage({ data }) {
                   src={`/images/${word.imageFile}`}
                   alt={word.word}
                   style={{
-                    width: '100%',
-                    maxHeight: '50vh',
-                    objectFit: 'contain',
-                    borderRadius: '12px',
-                    display: 'block',
+                      width: '100%',
+                      height: '90%',
+                      objectFit: 'contain',
+                      borderRadius: '30px',
+                      display: 'block',
+                      position: 'absolute',
+                      top: '0%',
+                      left: '0%', 
+                      border: '2px solid #444', 
+
                   }}
                 />
               )}

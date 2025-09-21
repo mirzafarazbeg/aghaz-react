@@ -22,7 +22,7 @@ body {
 }
 
 body {
-    margin: 20px;
+    margin: 2vmin;
     padding: 0;
 }
 
@@ -30,14 +30,15 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 30px;
-    margin-bottom: 30px;
-    margin-top: 30px; /* Prevents thumbnails from hitting the browser roof */
+    gap: 5vmin;
+    margin-bottom: 5vmin;
+    margin-top: 5vmin; /* Prevents thumbnails from hitting the browser roof */
 }
 
 .thumbnail {
     position: relative;
-    width: 200px;
+    width: 45vmin;
+    height: 40vmin;
     overflow: hidden;
     border-radius: 15px;
     text-align: center;
@@ -49,7 +50,7 @@ body {
 
 .thumbnail img {
     width: 100%;
-    height: 160px;
+    height: 70%;
     border-radius: 15px 15px 0 0;
     object-fit: cover;
 }
@@ -60,7 +61,7 @@ body {
     font-family: 'Jameel Noori Nastaleeq';
     font-size: 28px;
     width: 100%;
-    padding: 10px 0;
+    padding: 0px 0;
     border-radius: 0 0 15px 15px;
     margin: 0;
     text-decoration: none; /* Removes underline */
@@ -172,26 +173,6 @@ p {
     to { opacity: 1; }
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .thumbnail {
-        width: 120px;
-        margin: 10px;
-    }
-
-    .thumbnail img {
-        width: 120px;
-        height: 120px;
-    }
-
-    .thumbnail-text {
-        font-size: 24px; /* Larger text on mobile as well */
-    }
-
-    .mascot {
-        width: 60px;
-    }
-}
 /* Back Button */
 .back-button {
     position: fixed;
