@@ -21,8 +21,8 @@
     "path": "C:\\Users\\USER\\aghaz-react\\aghaz-twa\\android.keystore",
     "alias": "android"
   },
-  "appVersionName": "4",
-  "appVersionCode": 4,
+  "appVersionName": "5",
+  "appVersionCode": 5,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://www.aghazurdu.com/manifest.json",
@@ -36,7 +36,7 @@
   "isMetaQuest": false,
   "fullScopeUrl": "https://www.aghazurdu.com/",
   "minSdkVersion": 21,
-  "orientation": "any",
+  "orientation": "landscape",
   "fingerprints": [],
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
@@ -48,5 +48,5 @@
   ],
   "fileHandlers": [],
   "launchHandlerClientMode": "",
-  "appVersion": "4"
+  "appVersion": "5"
 }

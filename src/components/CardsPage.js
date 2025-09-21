@@ -47,6 +47,7 @@ function CardsPage({ data }) {
     if (nextGroupIndex < data.length) {
       setShowConfirmDialog(false);
       setTimeout(() => handleThumbnailClick(data[nextGroupIndex]), 100);
+      setSecondsLeft(5);
     } else {
       closePopup();
     }
@@ -67,8 +68,8 @@ function CardsPage({ data }) {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') closePopup();
-    if (e.key === 'ArrowRight') handleNext();
-    if (e.key === 'ArrowLeft' && currentIndex > 0) {
+    if (e.key === 'ArrowLeft') handleNext();
+    if (e.key === 'ArrowRight' && currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
       setIsVideoPlaying(false);
     }
@@ -120,6 +121,29 @@ function CardsPage({ data }) {
 
   const word = popupSequence?.words[currentIndex];
   const nextWord = popupSequence?.words[currentIndex + 1];
+const [secondsLeft, setSecondsLeft] = useState(5);
+
+
+useEffect(() => {
+  if (showConfirmDialog) setSecondsLeft(5);
+}, [showConfirmDialog]);
+
+useEffect(() => {
+  if (!showConfirmDialog || secondsLeft <= 0) return;
+
+  const timerId = setTimeout(() => {
+    setSecondsLeft(prev => prev - 1);
+  }, 1000);
+
+  return () => clearTimeout(timerId);
+}, [showConfirmDialog, secondsLeft]);
+
+useEffect(() => {
+  if (showConfirmDialog && secondsLeft === 0) {
+    confirmAdvance();
+  }
+}, [showConfirmDialog, secondsLeft, confirmAdvance]);
+
 
   const overlayStyles = {
     mediaContainer: {
@@ -130,11 +154,11 @@ function CardsPage({ data }) {
     },
     wordBadge: {
       position: 'absolute',
-      top: '2vh',
+      top: '0vh',
       right: '0vw',
       backgroundColor: 'rgba(0, 0, 0, 0.65)',
       color: '#fff',
-      padding: '8px 18px',
+      padding: '5px 10px',
       borderRadius: '999px',
       fontSize: '32px',
       fontWeight: '700',
@@ -163,8 +187,8 @@ function CardsPage({ data }) {
     },
     nextButton: {
       position: 'absolute',
-      top: '50%',
-      right: '0px',
+      bottom: '10vh',
+      left: '0px',
       transform: 'translateY(-50%)',
       backgroundColor: 'rgba(0, 0, 0, 0.65)',
       color: '#888',
@@ -334,8 +358,8 @@ function CardsPage({ data }) {
                     handleNext();
                   }}
                 >
-                  <span role="img" aria-label="Next word">➡️</span>
                   <span style={overlayStyles.nextButtonText}>اگلا لفظ: {nextWord.word}</span>
+                  <span role="img" aria-label="Next word">⬅️</span>
                 </button>
               )}
             </div>
@@ -356,7 +380,9 @@ function CardsPage({ data }) {
               zIndex: 99999
             }}>
               <p style={{ fontSize: '20px', marginBottom: '15px' }}>تمام الفاظ مکمل ہوگئے۔ کیا اگلے حرف پر چلیں؟</p>
-              <button onClick={confirmAdvance} style={{ ...btnStyle, backgroundColor: '#28a745', color: 'white' }}>ہاں</button>
+              <button onClick={confirmAdvance} style={{ ...btnStyle, backgroundColor: '#28a745', color: 'white' }}>
+                {secondsLeft > 0 ? `${secondsLeft}` : ''}
+              </button>
               <button onClick={closePopup} style={{ ...btnStyle, backgroundColor: '#dc3545', color: 'white' }}>نہیں</button>
             </div>
           )}
