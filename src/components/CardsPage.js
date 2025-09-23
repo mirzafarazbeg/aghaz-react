@@ -187,12 +187,12 @@ useEffect(() => {
     },
     nextButton: {
       position: 'absolute',
-      bottom: '10vh',
-      left: '0px',
+      top: '5vh',
+      left: '1vh',
       transform: 'translateY(-50%)',
       backgroundColor: 'rgba(0, 0, 0, 0.65)',
       color: '#888',
-      padding: '10px 16px',
+      padding: '2px 4px',
       borderRadius: '999px',
       display: 'flex',
       alignItems: 'center',
@@ -268,11 +268,11 @@ useEffect(() => {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              backgroundColor: '#fff',
+              backgroundColor: '#000',
               borderRadius: '10px',
-              padding: '25px 30px',
-              width: '80vw',
-              height: '80vh',
+              padding: '15px 15px',
+              width: '90vw',
+              height: '90vh',
               overflow: 'hidden',
               boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
               textAlign: 'center',
@@ -294,13 +294,14 @@ useEffect(() => {
                     src={`/videos/${word.videoFile}`}
                     style={{
                       width: '100%',
-                      height: '90%',
-                      objectFit: 'contain',
-                      borderRadius: '30px',
+                      height: '100%',
+                      objectFit: 'cover',
+                      borderRadius: '20px',
                       display: 'block',
                       position: 'absolute',
-                      top: '0%',
-                      left: '0%', 
+                      top: '50%',
+                      left: '50%', 
+                      transform:'translate(-50%, -50%)',
                       border: '2px solid #aaa', 
                     }}
                   />
@@ -309,18 +310,17 @@ useEffect(() => {
                     alt=""
                     style={{
                       position: 'absolute',
-                      bottom: '10px',
-                      right: '10px',
-                      width: 'auto',
+                      bottom: '0vh',
+                      right: '0vw',
+                      width: '33vw',
                       height: 'auto',
-                      maxWidth: '35%',
-                      maxHeight: '35%', 
                       border: '2px solid #fff',
                       borderRadius: '8px',
                       boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
                       backgroundColor: '#fff',
-                      objectFit: 'contain',
+                      objectFit: 'cover',
                       zIndex: 1,
+
                     }}
                   />
                 </>
@@ -329,16 +329,16 @@ useEffect(() => {
                   src={`/images/${word.imageFile}`}
                   alt={word.word}
                   style={{
-                      width: '100%',
-                      height: '90%',
-                      objectFit: 'contain',
-                      borderRadius: '30px',
+                      width: '85vw',
+                      height: '90vh',
+                      objectFit: 'cover',
+                      borderRadius: '20px',
                       display: 'block',
-                      position: 'absolute',
-                      top: '0%',
-                      left: '0%', 
                       border: '2px solid #444', 
-
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%', 
+                      transform:'translate(-50%, -50%)',
                   }}
                 />
               )}

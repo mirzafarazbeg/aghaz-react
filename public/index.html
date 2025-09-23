@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="ur" translate="no">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
@@ -32,8 +32,13 @@
 
     <!-- Manifest for PWA Support -->
     <link rel="manifest" href="./manifest.json" />
-    <script>navigator.serviceWorker.register("./pwabuilder-sw.js")</script> 
-<script>navigator.serviceWorker.register("pwabuilder-adv-sw.js")</script> 
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/pwabuilder-sw.js');
+        });
+      }
+    </script>
    
 </head>
 <body>

@@ -3142,6 +3142,7 @@ const alphabetData = [
     "letter": "bha",
     "harf": "بھ",
     "soundFile": "bha.mp3",
+    "isCompound":true,
     "words": [
       {
         "word": "بھینس",
@@ -3218,6 +3219,7 @@ const alphabetData = [
     "letter": "pha",
     "harf": "پھ",
     "soundFile": "pha.mp3",
+    "isCompound":true,
     "words": [
       {
         "word": "پھول",
@@ -3286,6 +3288,7 @@ const alphabetData = [
     "letter": "tha",
     "harf": "تھ",
     "soundFile": "tha.mp3",
+    "isCompound":true,
     "words": [
       {
         "word": "تھیلا",
@@ -3351,6 +3354,7 @@ const alphabetData = [
     "letter": "ttha",
     "harf": "ٹھ",
     "soundFile": "ttha.mp3",
+    "isCompound":true,
     "words": [
       {
         "word": "ٹھیلا",
@@ -3419,6 +3423,7 @@ const alphabetData = [
     "letter": "jha",
     "harf": "جھ",
     "soundFile": "jha.mp3",
+    "isCompound":true,
     "words": [
       {
         "word": "جھاڑو",
@@ -3498,6 +3503,7 @@ const alphabetData = [
     "letter": "chha",
     "harf": "چھ",
     "soundFile": "chha.mp3",
+    "isCompound":true,
     "words": [
       {
         "word": "چھڑی",
@@ -3574,6 +3580,7 @@ const alphabetData = [
     "letter": "dha",
     "harf": "دھ",
     "soundFile": "dha.mp3",
+    "isCompound":true,
     "words": [
       {
         "word": "دھاگہ",
@@ -3648,6 +3655,7 @@ const alphabetData = [
     "letter": "ddha",
     "harf": "ڈھ",
     "soundFile": "ddha.mp3",
+    "isCompound":true,
     "words": [
       {
         "word": "ڈھانپنا",
@@ -3699,6 +3707,7 @@ const alphabetData = [
     "letter": "kha",
     "harf": "کھ",
     "soundFile": "kha.mp3",
+    "isCompound":true,
     "words": [
       {
         "word": "کھڑکی",
@@ -3782,6 +3791,7 @@ const alphabetData = [
     "letter": "gha",
     "harf": "گھ",
     "soundFile": "gha.mp3",
+    "isCompound":true,
     "words": [
       {
         "word": "گھاٹ",

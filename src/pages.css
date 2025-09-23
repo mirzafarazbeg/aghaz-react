@@ -13,7 +13,7 @@
 .items-grid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-end;
+    justify-content: center;
     margin-left: 80px;
     height: 90vh;
 }
@@ -30,8 +30,8 @@
 
 /* Item Card */
 .item-card {
-    width: 190px;
-    margin: 10px;
+    width: 25vw;
+    margin: 1vmin;
     text-align: center;
     border-radius: 10px;
     background-color: #ffffff;
@@ -46,7 +46,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 200px;
+    height: 40vh;
     border: 1px solid #ddd;
 }
 
@@ -61,7 +61,7 @@
 
 /* Harf Display (Single Letter Only) */
 .harf-display {
-    font-size: 50px;
+    font-size: 7vmin;
     font-weight: bold;
     color: #7a0a0a;
     margin-bottom: 0px;
@@ -79,8 +79,8 @@
 } */
 .item-card img {
     width: 100%;
-    height: 100%;
-    object-fit: contain; /* ✅ Prevents cropping */
+    height: 120%;
+    object-fit: cover; /* ✅ Prevents cropping */
     background-color: #ededed; /* Optional: Adds padding space background */
     padding: 0px; /* Optional: Adds breathing room inside card */
     border-radius: 10px 10px 0 0;
@@ -258,19 +258,17 @@
     background-color: #444;
     color: #fff;
     border: none;
-    width: 50px;
-    height: 50px;
+    width: 5vmin;
+    height: 10vmin;
     font-size: 30px;
-    border-radius: 50%;
+    border-radius: 35%;
     cursor: pointer;
-    margin: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease;
-    position: fixed;
-    top: 20px;
-    right: 20px;
+    position: absolute;
+    top: 2vh;
+    right: 90vw;
     z-index: 999;
-    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -284,7 +282,7 @@
     margin: 2px;
     text-align: center;
     border-radius: 15px;
-    background-color: #ffffff;
+    background-color: #000000;
     box-shadow: 
         0 24px 48px rgba(0, 0, 0, 0.35),  /* Strong Outer Shadow */
         inset 0 0 25px rgba(220, 240, 255, 0.9),  /* Cool Inner Bevel */

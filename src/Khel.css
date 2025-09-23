@@ -14,23 +14,22 @@
 
 /* Game Grid */
 .game-grid {
-    --grid-gap: clamp(8px, 2vw, 16px);
-    --card-size: 180px; /* JS updates this to fit viewport */
-    display: grid;
-    grid-template-columns: repeat(3, minmax(100px, var(--card-size)));
-    grid-auto-rows: minmax(100px, calc(var(--card-size) * 0.75));
-    gap: var(--grid-gap);
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    justify-items: stretch;
-    align-items: stretch;
-    margin: 5px auto 0;
-    width: min(100%, calc(var(--card-size) * 3 + var(--grid-gap) * 2));
+    height: 90vh;
+    gap: 3vmin;
+                          position: 'absolute';
+                      top: '50%';
+                      left: '50%'; 
+                      transform:'translate(-50%, -50%)';
+
 }
 
 /* Game Card */
 .game-card {
-    width: 100%;
-    height: 100%;
+    width: 25vw;
+    height: 35vh;
     cursor: pointer;
     display: grid;                     /* Image + title rows */
     grid-template-rows: minmax(0, 1fr) minmax(40px, 18%);
@@ -45,7 +44,7 @@
 }
 
 .game-card img {
-    width: 100%;
+    width: 25vw;
     height: 100%;                      /* fill its grid row */
     object-fit: cover;                 /* cover available space */
     border-bottom: 1px solid #ddd;
@@ -54,7 +53,7 @@
 
 .game-card span {
     padding: 6px 10px;
-    font-size: clamp(14px, 2.2vw, 18px);
+    font-size: 2.5vmax;
     background-color: #444;
     color: #fff;
     display: flex;                     /* center and fill row */

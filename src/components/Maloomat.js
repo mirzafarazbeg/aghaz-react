@@ -39,40 +39,40 @@ function Maloomat() {
   const styles = {
     container: {
       textAlign: 'center',
-      padding: '20px',
-      fontFamily: 'Jameel Noori Nastaleeq, serif',
+      padding: '0px',
     },
     categoryGrid: {
       display: 'flex',
       flexWrap: 'wrap',
       justifyContent: 'center',
-      gap: '20px',
+      gap: '5vmin',
     },
     categoryCard: {
-      backgroundColor: '#f8f8f8',
+      backgroundColor: '#333',
       border: '2px solid #ddd',
       borderRadius: '10px',
-      padding: '10px',
-      fontSize: '20px',
+      fontSize: '5vmin',
       cursor: 'pointer',
       transition: 'transform 0.2s',
-      width: '120px',
+      width: '20vw',
       textAlign: 'center',
+      color: 'white',
     },
     categoryImage: {
-      width: '100px',
-      height: '100px',
+      width: '20vw',
+      height: 'auto',
       objectFit: 'cover',
       borderRadius: '10px',
-      marginBottom: '8px',
+      marginBottom: '0',
       border: '1px solid #ccc',
     },
     popup: {
-      position: 'fixed',
-      top: '15vh',
-      left: '15vw',
-      width: '70vw',
-      height: '70vh',
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: '95vw',
+      height: '95vh',
       backgroundColor: 'rgba(10, 10, 10, 0.9)',
       color: 'white',
       display: 'flex',
@@ -80,8 +80,7 @@ function Maloomat() {
       alignItems: 'center',
       justifyContent: 'center',
       zIndex: 1000,
-      borderRadius: '20px',
-      padding: '20px',
+      borderRadius: '10px',
     },
     popupWord: {
       textAlign: 'center',
@@ -89,36 +88,47 @@ function Maloomat() {
       width: '100%',
     },
     mediaContainer: {
-      position: 'relative',
-      width: '90%',
-      maxWidth: '700px',
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)', 
+      width: '90vw',
+      height: '90vh',
       aspectRatio: '4/3',
       margin: 'auto',
     },
     video: {
-      width: '100%',
-      height: '100%',
-      maxHeight: '400px',
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)', 
+
+      width: '90vw',
+      height: '90vh',
       objectFit: 'cover',
-      border: '4px solid #ccc',
+      border: '1px solid #666',
+      borderRadius: '10px',
     },
     image: {
-      width: '100%',
-      height: '100%',
-      maxHeight: '400px',
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)', 
+      width: '85vw',
+      height: '90vh',
       objectFit: 'cover',
-      border: '4px solid #fff',
+      border: '1px solid #666',
+      borderRadius: '10px',
     },
     overlayImage: {
       position: 'absolute',
-      bottom: '10px',
-      right: '10px',
-      width: '35%',
+      bottom: '0vh',
+      right: '0px',
+      width: '30vw',
       height: 'auto',
-      maxHeight: '30vh',
-      border: '2px solid #fff',
+      border: '1px solid #111',
       zIndex: 10,
-      borderRadius: '12px',
+      borderRadius: '4px',
       objectFit: 'cover',
     },
   };
@@ -227,8 +237,8 @@ function Maloomat() {
     if (!isPopupOpen) return;
     const handleKey = (e) => {
       if (e.key === 'Escape') closePopup();
-      if (e.key === 'ArrowRight') setCurrentIndex(i => (i + 1) % categoryWords.length);
-      if (e.key === 'ArrowLeft') setCurrentIndex(i => (i - 1 + categoryWords.length) % categoryWords.length);
+      if (e.key === 'ArrowLeft') setCurrentIndex(i => (i + 1) % categoryWords.length);
+      if (e.key === 'ArrowRight') setCurrentIndex(i => (i - 1 + categoryWords.length) % categoryWords.length);
     };
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
@@ -236,21 +246,6 @@ function Maloomat() {
 
   return (
     <div style={styles.container}>
-      <h1
-
-  style={{
-    fontFamily: "'Jameel Noori Nastaleeq'",
-    fontSize: '50px',
-    color: '#ffffff',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    padding: '5px 20px',
-    borderRadius: '15px',
-    marginBottom: '10px',
-    display: 'inline-block',
-    textShadow: '2px 2px 5px rgba(0, 0, 0, 0.8)'
-  }}
-      
-      >معلومات</h1>
       {!isPopupOpen && (
         <div style={styles.categoryGrid}>
           {Object.keys(groupedCategories).map((key, idx) => (
@@ -263,43 +258,37 @@ function Maloomat() {
       )}
       {isPopupOpen && categoryWords.length > 0 && (
         <div style={styles.popup}>
-          <div style={styles.popupWord}>
-            <div style={{ width: '100%', textAlign: 'center', marginBottom: '5px' }}>
-              <h2 style={{ fontSize: '22px', color: '#ccc' }}>{getUrduLabel(selectedCategory)}</h2>
-            </div>
-            <div style={{ position: 'relative', marginBottom: '10px' }}>
 <div style={{
   position: 'absolute',
   top: '2vh',
-  left: '50%',
-  transform: 'translateX(-50%)',
+  right: '2vw',
   backgroundColor: '#222',
   color: '#fff',
   fontSize: 'min(6vw, 28px)', // scales down on small screens
   padding: '4px 5vw',
   borderRadius: '12px',
   boxShadow: '0 0 6px rgba(0,0,0,0.4)',
-  zIndex: 10,
+  zIndex: 999,
   whiteSpace: 'nowrap'
 }}>
-  {categoryWords[currentIndex].word}
+{getUrduLabel(selectedCategory)}⬅️  {categoryWords[currentIndex].word}
 </div>
-
-            </div>
-            <div style={{ width: '90%', marginBottom: '10px' }}>
-              <div style={{ height: '10px', backgroundColor: '#444', borderRadius: '5px', overflow: 'hidden' }}>
+            <div style={{ width: '1vw',position:'absolute',left:'0vw',top:'2vh'  }}>
+              <div style={{ height: '90vh', backgroundColor: '#444', borderRadius: '5px', overflow: 'hidden' }}>
                 <div style={{
-                  width: `${((currentIndex + 1) / categoryWords.length) * 100}%`,
-                  height: '100%',
+                  height: `${((currentIndex + 1) / categoryWords.length) * 100}%`,
+                  width: '100%',
                   backgroundColor: '#4caf50',
                   transition: 'width 0.5s ease'
                 }} />
               </div>
             </div>
+
+          <div style={styles.popupWord}>
             <div style={styles.mediaContainer}>
               {categoryWords[currentIndex].videoFile ? (
                 <>
-                  <video ref={videoRef} src={`/videos/${categoryWords[currentIndex].videoFile}`} style={styles.video} controls={false} />
+                  <video ref={videoRef} src={`/videos/${categoryWords[currentIndex].videoFile}`} style={styles.video} controls={true} />
                   <img src={`/images/${categoryWords[currentIndex].imageFile}`} alt={categoryWords[currentIndex].word} style={styles.overlayImage} />
                 </>
               ) : (

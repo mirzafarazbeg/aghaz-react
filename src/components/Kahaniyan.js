@@ -20,7 +20,6 @@ function Kahaniyan() {
 
     return (
         <div className="kahaniyan">
-            <h1>کہانیاں</h1>
             <div className="video-list">
                 {videoData.map((video, index) => {
                     const videoId = video.url.split('v=')[1];

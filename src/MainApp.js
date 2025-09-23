@@ -43,10 +43,10 @@ function MainApp() {
     { name: "qaida", label: "قاعدہ" },
     { name: "ginti", label: "گنتی" },
     { name: "rung", label: "رنگ" },
-    { name: "kahaniyan", label: "کہانیاں" },
-    { name: "nazmain", label: "نظمیں" },
     { name: "khel", label: "کھیل" },
     { name: "maloomat", label: "معلومات" },
+    { name: "kahaniyan", label: "کہانیاں" },
+    { name: "nazmain", label: "نظمیں" },
     { name: "kitabain", label: "کتابیں" }
   ];
 
@@ -87,9 +87,6 @@ function MainApp() {
         <Route path="/qaida" element={<Qaida />} />
         <Route path="/ginti" element={<Ginti />} />
         <Route path="/rung" element={<Rung />} />
-        <Route path="/kahaniyan" element={<Kahaniyan />} />
-        <Route path="/nazmain" element={<Nazmain />} />
-
         {/* ✅ Reliable Khel route with DnD context */}
         <Route
           path="/khel"
@@ -101,6 +98,8 @@ function MainApp() {
         />
 
         <Route path="/maloomat" element={<Maloomat />} />
+        <Route path="/kahaniyan" element={<Kahaniyan />} />
+        <Route path="/nazmain" element={<Nazmain />} />
         <Route path="/kitabain" element={<Kitabain />} />
       </Routes>
     </div>

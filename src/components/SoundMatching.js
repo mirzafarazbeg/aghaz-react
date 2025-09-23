@@ -205,14 +205,13 @@ const SoundMatching = () => {
         <div style={{ fontSize: '18px' }}>سوال: {round + 1} / {TOTAL_ROUNDS}</div>
       </div>
 
-
-      {/* 2x2 Grid */}
       <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
+        display: 'flex',
+        flexWrap: 'wrap',
         gap: '1vmin',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        overflow: 'hidden',
       }}>
         {options.map((item, idx) => (
           <div
@@ -223,9 +222,9 @@ const SoundMatching = () => {
                 ? selectedImage.correct
                   ? '4px solid green'
                   : '4px solid red'
-                : '2px solid transparent',
+                : '2px solid black',
               borderRadius: '12px',
-              padding: '4px',
+              padding: '0px',
               transition: 'border 0.2s ease-in-out',
               cursor: 'pointer',
               backgroundColor: '#fff'
@@ -235,9 +234,9 @@ const SoundMatching = () => {
               src={`/images/${item.imageFile}`}
               alt={item.word}
               style={{
-                width: '55vmin',
-                height: 'auto',
-                objectFit: 'contain',
+                width: '28vw',
+                height: '30vh',
+                objectFit: 'cover',
                 borderRadius: '8px',
                 display: 'block',
                 margin: '0 auto'

@@ -131,6 +131,19 @@ function QuickQuiz({ onClose }) {
       {showConfetti && <Confetti />}
       {!showResult ? (
         <div className="quiz-content">
+          <div
+          style={{
+                  position: 'absolute',
+                  top: '50%',
+                  right: '5vw', 
+                  backgroundColor: '#999',
+                  color: 'white',
+                  border: '0.25vmin solid #000',
+                  padding: '0.5vmin 1vmin',
+                  borderRadius: '25%',
+                  fontSize: '5vmin',
+          }}
+          >سوال {current + 1} / {questions.length}</div>
           <img
             src={`/images/${questions[current].image}`}
             alt="quiz-img"
@@ -154,7 +167,6 @@ function QuickQuiz({ onClose }) {
               </button>
             ))}
           </div>
-          <p>سوال {current + 1} / {questions.length}</p>
         </div>
       ) : (
         <div className="quiz-result">
@@ -172,7 +184,7 @@ function QuickQuiz({ onClose }) {
           text-align: center;
         }
         .quiz-image {
-          width: 220px;
+          width: 45vw;
           height: auto;
           border-radius: 10px;
           margin: 10px auto;
@@ -197,18 +209,14 @@ function QuickQuiz({ onClose }) {
           transition: background-color 0.3s, transform 0.2s;
         }
         .quiz-option:hover {
-          background-color: #007bff;
-          color: white;
           transform: scale(1.05);
         }
         .correct-answer {
           border-color: green !important;
-          background-color: #e6ffe6;
           transition: 0.3s;
         }
         .wrong-answer {
           border-color: red !important;
-          background-color: #ffeaea;
           animation: shake 0.3s ease-in-out;
         }
         @keyframes shake {

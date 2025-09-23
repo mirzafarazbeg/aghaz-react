@@ -4,7 +4,7 @@ import Confetti from 'react-confetti';
 import alphabetData from '../Data/alphabetData';
 import mascotQuotes from '../Data/mascotQuotes.json';
 
-const UrduAlphabet = alphabetData.map(l => l.harf).filter(Boolean);
+const UrduAlphabet = alphabetData.filter(letter => !letter.isCompound).map(l => l.harf).filter(Boolean);
 
 const DraggableLetter = ({ letter, moveLetter }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
