@@ -1,38 +1,47 @@
-﻿const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const publicDir = path.resolve(__dirname, '../public');
-const outputFile = path.join(publicDir, 'precache-manifest.js');
+const argPath = process.argv[2];
+const defaultBuildDir = path.resolve(__dirname, '../build');
+const defaultPublicDir = path.resolve(__dirname, '../public');
+const targetDir = argPath
+  ? path.resolve(process.cwd(), argPath)
+  : fs.existsSync(defaultBuildDir)
+    ? defaultBuildDir
+    : defaultPublicDir;
+
+if (!fs.existsSync(targetDir)) {
+  throw new Error(`Target directory not found at ${targetDir}`);
+}
+
+const outputFile = path.join(targetDir, 'precache-manifest.js');
+const rootDirLabel = path.relative(process.cwd(), targetDir) || '.';
 
 function walkDirectory(dir) {
   const entries = [];
   const dirents = fs.readdirSync(dir, { withFileTypes: true });
   dirents.forEach((dirent) => {
     const fullPath = path.join(dir, dirent.name);
+    const relativeFromTarget = path.relative(targetDir, fullPath);
     if (dirent.isDirectory()) {
+      // Skip build-time helper folders such as reports if present
       entries.push(...walkDirectory(fullPath));
     } else if (dirent.isFile()) {
-      if (path.relative(publicDir, fullPath) === 'precache-manifest.js') {
+      // Avoid caching the manifest itself to prevent stale entries
+      if (relativeFromTarget === 'precache-manifest.js') {
         return;
       }
       const fileBuffer = fs.readFileSync(fullPath);
       const hash = crypto.createHash('sha256').update(fileBuffer).digest('hex');
-      const relativePath = path
-        .relative(publicDir, fullPath)
-        .split(path.sep)
-        .join('/');
+      const relativePath = relativeFromTarget.split(path.sep).join('/');
       entries.push({ url: `/${relativePath}`, revision: hash });
     }
   });
   return entries;
 }
 
-if (!fs.existsSync(publicDir)) {
-  throw new Error(`Public directory not found at ${publicDir}`);
-}
-
-const manifestEntries = walkDirectory(publicDir).sort((a, b) =>
+const manifestEntries = walkDirectory(targetDir).sort((a, b) =>
   a.url.localeCompare(b.url)
 );
 
@@ -42,8 +51,6 @@ const body = `self.__PRECACHE_MANIFEST = ${JSON.stringify(manifestEntries, null,
 fs.writeFileSync(outputFile, header + body, 'utf8');
 
 console.log(
-  `Wrote ${manifestEntries.length} entries to ${path.relative(
-    process.cwd(),
-    outputFile
-  )}`
+  `Wrote ${manifestEntries.length} entries to ${path.relative(process.cwd(), outputFile)} ` +
+    `(scanned ${rootDirLabel})`
 );

@@ -46,7 +46,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 40vh;
+    height: 35vh;
     border: 1px solid #ddd;
 }
 
@@ -78,12 +78,13 @@
     flex-grow: 1;
 } */
 .item-card img {
-    width: 100%;
-    height: 120%;
-    object-fit: cover; /* ✅ Prevents cropping */
+    width: 25vw;
+    height: auto;
+    object-fit: cover; /* âœ… Prevents cropping */
     background-color: #ededed; /* Optional: Adds padding space background */
     padding: 0px; /* Optional: Adds breathing room inside card */
-    border-radius: 10px 10px 0 0;
+    border-radius: 10px;
+    
 }
 
 /* Card Text (Single Letter Only) */
@@ -94,24 +95,20 @@
 /* Sound and Video Buttons */
 .sound-button, .video-button {
     position: absolute;
-    top: 5px;
-    left: 5px;
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #444;
-    border: none;
-    font-size: 24px;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    top: 2px;
+    left: 2px;
+    background-color: rgba(50, 50,50, 50%);
+    border: 1px solid #ccc;
+    font-size: 3vmin;
+    border-radius: 40%;
+    width: auto;
+    height: 4.5min;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.sound-button:hover, .video-button:hover {
-    transform: scale(1.2);
-    background-color: #eee;
-}
+
 
 /* Back Button */
 .back-button {
@@ -228,30 +225,6 @@
     font-family: 'Jameel Noori Nastaleeq', Arial, sans-serif;
 }
 
-/* Sound and Video Buttons */
-.sound-button, .video-button {
-    position: absolute;
-    top: 2px;
-    left: 15px;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #444;
-    border: none;
-    font-size: 24px;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.sound-button:hover, .video-button:hover {
-    transform: scale(1.2);
-    background-color: #eee;
-}
 
 /* Back Button */
 .back-button {
@@ -376,30 +349,6 @@
     z-index: 10000;
 }
 
-/* Sound and Video Buttons */
-.sound-button, .video-button {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #444;
-    border: none;
-    font-size: 18px;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    margin-bottom: 5px;
-    z-index: 2;
-}
-
-.sound-button:hover, .video-button:hover {
-    transform: scale(1.2);
-    background-color: #eee;
-}
-
 
 /* Popup Button Styles */
 .popup-buttons {
@@ -409,17 +358,3 @@
     margin-top: 15px;
 }
 
-.sound-button, .video-button {
-    font-size: 30px;
-    background-color: #ffffff;
-    border: 2px solid #ddd;
-    border-radius: 50%;
-    padding: 10px;
-    cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.sound-button:hover, .video-button:hover {
-    transform: scale(1.2);
-    background-color: #f0f0f0;
-}
