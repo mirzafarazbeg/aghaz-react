@@ -1,0 +1,17 @@
+[
+    {
+        "image": "/images/apple.jpg",
+        "options": ["سیب", "کیلا", "آم", "خوبانی"],
+        "answer": "سیب"
+    },
+    {
+        "image": "/images/banana.jpg",
+        "options": ["خوبانی", "کیلا", "انار", "انگور"],
+        "answer": "کیلا"
+    },
+    {
+        "image": "/images/mango.jpg",
+        "options": ["آم", "سیب", "کیلا", "انار"],
+        "answer": "آم"
+    }
+]
