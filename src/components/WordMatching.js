@@ -1,30 +1,19 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import '../WordMatching.css';
-import alphabetData from '../Data/alphabetData';
-import mascotQuotes from '../Data/mascotQuotes.json';
-import Confetti from 'react-confetti';
 import { useDrag, useDrop } from 'react-dnd';
+import Confetti from 'react-confetti';
+import { shuffleArray } from '../utils/shuffle';
+import { playSound } from '../utils/audio';
+import { useGameWords } from '../hooks/useGameWords';
+import { useCelebration } from '../hooks/useCelebration';
 
 const normalize = (str) => str?.trim().normalize('NFC');
 
-const playSound = (type) => {
-  const file =
-    type === 'correct'
-      ? '/sounds/correct.mp3'
-      : type === 'wrong'
-      ? '/sounds/wrong.mp3'
-      : '/sounds/fanfare.mp3';
-  const audio = new Audio(file);
-  audio.play();
-};
-
-function WordCard({ word }) {
+const WordCard = React.memo(function WordCard({ word }) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'WORD',
     item: () => ({ word }),
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
+    collect: (monitor) => ({ isDragging: monitor.isDragging() }),
   }), [word]);
 
   return (
@@ -32,177 +21,108 @@ function WordCard({ word }) {
       {word}
     </div>
   );
-}
+});
 
-function ImageCard({ item, onDrop }) {
+const ImageCard = React.memo(function ImageCard({ item, onDrop }) {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'WORD',
     drop: (dragged) => onDrop(dragged.word, item.word),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
-  }));
+    collect: (monitor) => ({ isOver: monitor.isOver() }),
+  }), [item, onDrop]);
 
   return (
     <div ref={drop} className={`image-card ${isOver ? 'hover' : ''}`}>
-      <img src={`/images/${item.imageFile}`} alt={item.word} draggable={false} />
+      <img
+        src={`/images/${item.imageFile}`}
+        alt={item.word}
+        draggable={false}
+        loading="lazy"
+      />
     </div>
   );
-}
+});
 
 function WordMatching() {
-  const [shuffledImages, setShuffledImages] = useState([]);
-  const [shuffledWords, setShuffledWords] = useState([]);
+  const [baseWords, reshuffleWords] = useGameWords('WordMatching', 6);
   const [matched, setMatched] = useState([]);
   const [message, setMessage] = useState('');
   const [score, setScore] = useState(0);
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
-  const [quote, setQuote] = useState('');
-  const [confetti, setConfetti] = useState(false);
+  const { showConfetti, showMascot, mascotQuote, celebrate, reset: resetCelebration } = useCelebration();
 
-  const extractGameWords = () => {
-    const validWords = [];
+  const shuffledImages = useMemo(() => shuffleArray(baseWords), [baseWords]);
+  const shuffledWords  = useMemo(() => shuffleArray(baseWords), [baseWords]);
 
-    alphabetData.forEach(letter => {
-      letter.words?.forEach(wordObj => {
-        if (wordObj.games?.includes('WordMatching')) {
-          validWords.push({
-            word: normalize(wordObj.word),
-            imageFile: wordObj.imageFile,
-          });
-        }
-      });
-    });
-
-    return validWords;
-  };
+  useEffect(() => {
+    if (!message) return;
+    const id = setTimeout(() => setMessage(''), 1500);
+    return () => clearTimeout(id);
+  }, [message]);
 
   const initGame = useCallback(() => {
-    const allValid = extractGameWords();
-    const base = allValid
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 6);
-
-    setShuffledImages([...base].sort(() => 0.5 - Math.random()));
-    setShuffledWords([...base].sort(() => 0.5 - Math.random()));
+    reshuffleWords();
     setMatched([]);
     setScore(0);
     setMessage('');
-    setStartTime(Date.now());
-    setEndTime(null);
-    setQuote('');
-    setConfetti(false);
+    resetCelebration();
+  }, [reshuffleWords, resetCelebration]);
 
-    console.clear();
-    console.log("🎯 New Game Started:");
-    base.forEach((item, i) => {
-      console.log(`Item ${i + 1}: ${item.word} (${item.imageFile})`);
-    });
-  }, []);
-
-  useEffect(() => {
-    initGame();
-  }, [initGame]);
-
-  const handleDrop = (draggedWord, targetWord) => {
+  const handleDrop = useCallback((draggedWord, targetWord) => {
     const cleanDragged = normalize(draggedWord);
-    const cleanTarget = normalize(targetWord);
-
-    const isCorrect = cleanDragged === cleanTarget;
+    const cleanTarget  = normalize(targetWord);
+    const isCorrect    = cleanDragged === cleanTarget;
 
     setMatched(prev => {
-      const alreadyMatched = prev.includes(cleanTarget);
-
-      if (isCorrect && !alreadyMatched) {
+      if (prev.includes(cleanTarget)) return prev;
+      if (isCorrect) {
         const updated = [...prev, cleanTarget];
         setScore(s => s + 1);
-        setMessage(':✅ صحیح!');
-        playSound('correct');
-
-        const timestamp = new Date().toLocaleTimeString();
-        console.log(`✔️ MATCHED at ${timestamp}`);
-        console.log('  Dragged:', cleanDragged);
-        console.log('  Target :', cleanTarget);
-        console.log('  Matched:', updated);
-
-        if (updated.length === 6) {
-          const finishTime = Date.now();
-          const duration = Math.floor((finishTime - startTime) / 1000);
-          setEndTime(finishTime);
-          const quote = mascotQuotes[Math.floor(Math.random() * mascotQuotes.length)];
-          setQuote(quote);
-          setConfetti(true);
-          playSound('fanfare');
-          console.log(`🎉 Game Complete! Time taken: ${duration} seconds`);
-        }
-
+        setMessage('✅ صحیح!');
+        playSound('correct.mp3');
+        if (updated.length === 6) celebrate();
         return updated;
       }
-
-      if (!isCorrect) {
-        setMessage(':❌ غلط!');
-        playSound('wrong');
-        console.log('❌ NO MATCH');
-        console.log('  Dragged:', cleanDragged);
-        console.log('  Target :', cleanTarget);
-        console.log('  Matched:', prev);
-      }
-
+      setMessage('❌ غلط!');
+      playSound('wrong.mp3');
       return prev;
     });
-
-    setTimeout(() => setMessage(''), 1500);
-  };
-
-  const secondsElapsed = endTime
-    ? Math.floor((endTime - startTime) / 1000)
-    : Math.floor((Date.now() - startTime) / 1000);
+  }, [celebrate]);
 
   return (
     <div className="wm-container">
-     <p>ملاؤ لفظ اور تصویر</p>
-      
+      <p>ملاؤ لفظ اور تصویر</p>
 
-
-      <div 
-            style={{
-      position: 'absolute',
-      top: '10px',        // adjust vertical position
-      left: '10px',     // distance from right
-      backgroundColor: 'rgba(255, 255, 255, 0.9)',
-      padding: '10px 15px',
-      borderRadius: '8px',
-      zIndex: 10,
-      // width or max-width if needed
-    }}
->
-        Score➡️{score/2}/6{message}
-      {quote && (          <button className="restart-button" onClick={initGame}>🔄 دوبارہ کھیلیں</button>
-)}
+      <div style={{
+        position: 'absolute', top: '10px', left: '10px',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        padding: '10px 15px', borderRadius: '8px', zIndex: 10,
+      }}>
+        اسکور: {score}/6 {message}
+        {showMascot && (
+          <button className="restart-button" onClick={initGame}>🔄 دوبارہ کھیلیں</button>
+        )}
       </div>
 
       <div className="wm-grid">
         {shuffledWords
-          .filter(item => !matched.includes(item.word))
-          .map((item) => (
+          .filter(item => !matched.includes(normalize(item.word)))
+          .map(item => (
             <WordCard key={item.word + '-word'} word={item.word} />
           ))}
         {shuffledImages
-          .filter(item => !matched.includes(item.word))
-          .map((item) => (
+          .filter(item => !matched.includes(normalize(item.word)))
+          .map(item => (
             <ImageCard key={item.word + '-img'} item={item} onDrop={handleDrop} />
           ))}
       </div>
 
-      {quote && (
+      {showMascot && (
         <div className="mascot-quote">
-          <div className="mascot-bubble">🌟 {quote}</div>
+          <div className="mascot-bubble">🌟 {mascotQuote}</div>
           <img src="/images/mascot.png" alt="Mascot" className="mascot" />
         </div>
       )}
 
-      {confetti && <Confetti />}
+      {showConfetti && <Confetti />}
     </div>
   );
 }

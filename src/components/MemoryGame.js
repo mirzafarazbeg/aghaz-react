@@ -1,15 +1,42 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import '../MemoryGame.css';
-import alphabetData from '../Data/alphabetData';
-import mascotQuotes from '../Data/mascotQuotes.json';
 import Confetti from 'react-confetti';
+// NOTE: wildcard imports are needed here because icons are data-driven from alphabetData.
+// To optimize bundle size, audit alphabetData.js and replace with named imports.
 import * as FaIcons from 'react-icons/fa';
 import * as GiIcons from 'react-icons/gi';
 import * as MdIcons from 'react-icons/md';
 import * as BsIcons from 'react-icons/bs';
+import { shuffleArray } from '../utils/shuffle';
+import { filterGameWords } from '../utils/gameUtils';
+import { useCelebration } from '../hooks/useCelebration';
 
+// Built once at module level — not recreated on every render
 const iconMap = { ...FaIcons, ...GiIcons, ...MdIcons, ...BsIcons };
-const shuffleArray = (array) => [...array].sort(() => Math.random() - 0.5);
+
+const MemoryCard = React.memo(function MemoryCard({ card, isFlipped, onClick }) {
+  return (
+    <div
+      className={`memory-card ${isFlipped ? 'flipped' : ''}`}
+      onClick={() => onClick(card)}
+    >
+      {isFlipped && (
+        card.type === 'cue' ? (
+          <div className="cue-card">
+            {card.icon && iconMap[card.icon] && (
+              <div className="cue-icon">
+                {React.createElement(iconMap[card.icon], { size: 36 })}
+              </div>
+            )}
+            <div className="cue-text">{card.text}</div>
+          </div>
+        ) : (
+          <div className="card-text">{card.text}</div>
+        )
+      )}
+    </div>
+  );
+});
 
 const MemoryGame = ({ onClose }) => {
   const [cards, setCards] = useState([]);
@@ -17,221 +44,99 @@ const MemoryGame = ({ onClose }) => {
   const [matchedPairs, setMatchedPairs] = useState([]);
   const [score, setScore] = useState(0);
   const [moves, setMoves] = useState(0);
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [showMascot, setShowMascot] = useState(false);
-  const [mascotQuote, setMascotQuote] = useState('');
-  const [activeAudio, setActiveAudio] = useState(null);
-  const audioCache = useRef({});
 
-  const playSound = (file) => {
-    if (file === 'correct.mp3') {
-      new Audio('/sounds/correct.mp3').play();
-      return;
-    }
+  const timeoutRef  = useRef(null);
+  const audioCache  = useRef({});
+  const { showConfetti, showMascot, mascotQuote, celebrate, reset: resetCelebration } = useCelebration();
 
-    const path = `/sounds/${file}`;
-    const audio = audioCache.current[path];
+  const initializeGame = useCallback(() => {
+    const allWords = filterGameWords('MemoryGame')
+      .filter(w => w.icon)
+      .map(w => ({
+        word: w.word,
+        disjointed: [...w.word].join(' '),
+        icon: w.icon,
+        soundFile: w.soundFile || null,
+      }));
 
-    if (audio && (!activeAudio || activeAudio.paused)) {
-      setActiveAudio(audio);
-      audio.currentTime = 0;
-      audio.play();
-      audio.addEventListener('ended', () => setActiveAudio(null), { once: true });
-    }
-  };
+    const selected = shuffleArray(allWords).slice(0, 6);
 
-  // const initializeGame = () => {
-  //   const allWords = alphabetData.flatMap(letter =>
-  //     letter.words
-  //       .filter(word => word.icon && word.games?.includes('MemoryGame'))
-  //       .map(word => ({
-  //         word: word.word,
-  //         disjointed: [...word.word].join(' '),
-  //         icon: word.icon || null,
-  //         soundFile: word.soundFile || null
-  //       }))
-  //   );
+    const pairedCards = selected.flatMap(item => [
+      { type: 'cue',    word: item.word, id: `${item.word}-cue`,    icon: item.icon, text: item.disjointed, soundFile: item.soundFile },
+      { type: 'answer', word: item.word, id: `${item.word}-answer`,                  text: item.word,       soundFile: item.soundFile },
+    ]);
 
-  //   const selected = shuffleArray(allWords).slice(0, 6);
+    setCards(shuffleArray(pairedCards));
+    setFlippedCards([]);
+    setMatchedPairs([]);
+    setScore(0);
+    setMoves(0);
+    resetCelebration();
 
-  //   const pairedCards = selected.flatMap(item => [
-  //     {
-  //       type: 'cue',
-  //       word: item.word,
-  //       id: `${item.word}-cue`,
-  //       icon: item.icon,
-  //       text: item.disjointed,
-  //       soundFile: item.soundFile
-  //     },
-  //     {
-  //       type: 'answer',
-  //       word: item.word,
-  //       id: `${item.word}-answer`,
-  //       text: item.word,
-  //       soundFile: item.soundFile
-  //     }
-  //   ]);
-
-  //   setCards(shuffleArray(pairedCards));
-  //   setFlippedCards([]);
-  //   setMatchedPairs([]);
-  //   setScore(0);
-  //   setMoves(0);
-  //   setShowMascot(false);
-  //   setMascotQuote('');
-  //   setShowConfetti(false);
-  //   setActiveAudio(null);
-
-  //   // 🔊 Preload audio
-  //   audioCache.current = {};
-  //   selected.forEach(item => {
-  //     const path = `/sounds/${item.soundFile}`;
-  //     if (item.soundFile && !audioCache.current[path]) {
-  //       const audio = new Audio(path);
-  //       audioCache.current[path] = audio;
-  //     }
-  //   });
-  // };
-
-const initializeGame = () => {
-  const allWords = alphabetData.flatMap(letter =>
-    letter.words
-      .filter(word => word.icon && word.games?.includes('MemoryGame'))
-      .map(word => ({
-        word: word.word,
-        disjointed: [...word.word].join(' '),
-        icon: word.icon || null,
-        soundFile: word.soundFile || null
-      }))
-  );
-
-  const selected = shuffleArray(allWords).slice(0, 6);
-
-  const pairedCards = selected.flatMap(item => [
-    {
-      type: 'cue',
-      word: item.word,
-      id: `${item.word}-cue`,
-      icon: item.icon,
-      text: item.disjointed,
-      soundFile: item.soundFile
-    },
-    {
-      type: 'answer',
-      word: item.word,
-      id: `${item.word}-answer`,
-      text: item.word,
-      soundFile: item.soundFile
-    }
-  ]);
-
-  setCards(shuffleArray(pairedCards));
-  setFlippedCards([]);
-  setMatchedPairs([]);
-  setScore(0);
-  setMoves(0);
-  setShowMascot(false);
-  setMascotQuote('');
-  setShowConfetti(false);
-  setActiveAudio(null);
-
-  // 🔊 Rebuild audio cache with valid sound files
-  audioCache.current = {};
-  selected.forEach(item => {
-    if (item.soundFile && typeof item.soundFile === 'string') {
-      const path = `/sounds/${item.soundFile}`;
-      const audio = new Audio(path);
-
-      audio.onerror = () => {
-        console.warn(`⚠️ Sound file not found: ${path}`);
-      };
-
-      audioCache.current[path] = audio;
-    }
-  });
-};
-
-useEffect(() => {
-    initializeGame();
-  }, []);
+    // Preload audio files
+    audioCache.current = {};
+    selected.forEach(item => {
+      if (item.soundFile) {
+        const path = `/sounds/${item.soundFile}`;
+        const audio = new Audio(path);
+        audio.onerror = () => console.warn(`Sound not found: ${path}`);
+        audioCache.current[path] = audio;
+      }
+    });
+  }, [resetCelebration]);
 
   useEffect(() => {
-    if (matchedPairs.length > 0 && matchedPairs.length === cards.length) {
-      triggerCelebration();
+    initializeGame();
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [initializeGame]);
+
+  // Trigger celebration when all pairs are matched
+  useEffect(() => {
+    if (cards.length > 0 && matchedPairs.length === cards.length) {
+      celebrate();
     }
-  }, [matchedPairs, cards.length]);
+  }, [matchedPairs.length, cards.length, celebrate]);
 
-  const triggerCelebration = () => {
-    const quote = mascotQuotes[Math.floor(Math.random() * mascotQuotes.length)];
-    setMascotQuote(quote);
-    setTimeout(() => {
-      setShowMascot(true);
-      setShowConfetti(true);
-      new Audio('/sounds/fanfare.mp3').play();
-    }, 500);
-    setTimeout(() => setShowConfetti(false), 5000);
-  };
+  const playCardSound = useCallback((file) => {
+    if (!file) return;
+    if (file === 'correct.mp3') {
+      new Audio('/sounds/correct.mp3').play().catch(() => {});
+      return;
+    }
+    const path = `/sounds/${file}`;
+    const audio = audioCache.current[path];
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    }
+  }, []);
 
-  const handleClick = (card) => {
+  const handleClick = useCallback((card) => {
     if (flippedCards.length === 2 || flippedCards.some(c => c.id === card.id)) return;
 
-    if (card.type === 'cue' && card.soundFile) {
-      playSound(card.soundFile);
-    }
+    if (card.type === 'cue' && card.soundFile) playCardSound(card.soundFile);
 
     const newFlipped = [...flippedCards, card];
     setFlippedCards(newFlipped);
 
     if (newFlipped.length === 2) {
-      setMoves(prev => prev + 1);
-      if (
-        newFlipped[0].word === newFlipped[1].word &&
-        newFlipped[0].type !== newFlipped[1].type
-      ) {
-        const newMatched = [...matchedPairs, newFlipped[0].id, newFlipped[1].id];
-        setMatchedPairs(newMatched);
-        setScore(prev => prev + 1);
-
-        if (card.soundFile) playSound(card.soundFile);
-        playSound('correct.mp3');
+      setMoves(m => m + 1);
+      const [a, b] = newFlipped;
+      if (a.word === b.word && a.type !== b.type) {
+        setMatchedPairs(mp => [...mp, a.id, b.id]);
+        setScore(s => s + 1);
+        playCardSound('correct.mp3');
+        if (card.soundFile) playCardSound(card.soundFile);
       }
-      setTimeout(() => setFlippedCards([]), 1000);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => setFlippedCards([]), 1000);
     }
-  };
-
-  const isFlipped = (card) =>
-    flippedCards.some(c => c.id === card.id) || matchedPairs.includes(card.id);
-
-  const renderCard = (card) => {
-    const flipped = isFlipped(card);
-    return (
-      <div
-        key={card.id}
-        className={`memory-card ${flipped ? 'flipped' : ''}`}
-        onClick={() => handleClick(card)}
-      >
-        {flipped && (
-          <>
-            {card.type === 'cue' ? (
-              <div className="cue-card">
-                {card.icon && iconMap[card.icon] && (
-                  <div className="cue-icon">
-                    {React.createElement(iconMap[card.icon], { size: 36 })}
-                  </div>
-                )}
-                <div className="cue-text">{card.text}</div>
-              </div>
-            ) : (
-              <div className="card-text">{card.text}</div>
-            )}
-          </>
-        )}
-      </div>
-    );
-  };
+  }, [flippedCards, playCardSound]);
 
   return (
-    <div className="game-popup-content" onClick={(e) => e.stopPropagation()}>
+    <div className="game-popup-content" onClick={e => e.stopPropagation()}>
       <h2 className="memory-title">یادداشت کا کھیل</h2>
 
       <div className="memory-score-card">
@@ -240,7 +145,14 @@ useEffect(() => {
       </div>
 
       <div className="memory-grid">
-        {cards.map(renderCard)}
+        {cards.map(card => (
+          <MemoryCard
+            key={card.id}
+            card={card}
+            isFlipped={flippedCards.some(c => c.id === card.id) || matchedPairs.includes(card.id)}
+            onClick={handleClick}
+          />
+        ))}
       </div>
 
       {showMascot && (

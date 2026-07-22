@@ -1,17 +1,102 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+.kahaniyan {
+    text-align: center;
+    margin: 10px 10px;
+}
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+.kahaniyan h1 {
+    font-family: 'Jameel Noori Nastaleeq';
+    font-size: 50px;
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 5px 20px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    display: inline-block;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+}
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+.video-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+}
+
+.video-thumbnail {
+    width: 300px;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.video-thumbnail img {
+    width: 100%;
+    border-radius: 15px;
+    transition: transform 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.video-title {
+    font-family: 'Jameel Noori Nastaleeq';
+    font-size: 22px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 0 0 15px 15px;
+    margin: 0;
+    position: relative;
+    top: -10px;
+    z-index: 1;
+}
+
+.video-thumbnail:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.video-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.video-popup-content {
+    width: 90%;
+    max-width: 1400px;
+    background-color: #000;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    padding: 20px;
+}
+
+.popup-title {
+    font-family: 'Jameel Noori Nastaleeq';
+    font-size: 36px;
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: none;
+    color: white;
+    font-size: 30px;
+    border: none;
+    cursor: pointer;
+    z-index: 10000;
+}

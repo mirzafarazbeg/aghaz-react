@@ -31,11 +31,6 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     gap: 5vmin;
-                      position: 'absolute';
-                      top: '50%';
-                      left: '50%'; 
-                      transform:'translate(-50%, -50%)';
-
 }
 
 .thumbnail {
